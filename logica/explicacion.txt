@@ -1,0 +1,23 @@
+*fron-end				
+html					
+javascript					
+CSS
+CSS3
+framework
+bootstrap
+
+*back-end
+MySql
+PHP
+SLIM
+JSON				
+APIRESTFULL: devuelve en formato JSON
+conexion por PDO en php
+
+
+
+
+
+Back-end
+XML
+APIRESTFULL
