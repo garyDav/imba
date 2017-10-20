@@ -129,7 +129,7 @@
 	app.config(['$routeProvider',function($routeProvider) {
 		$routeProvider.
 			when('/',{
-				templateUrl: 'public/give/views/main.view.html',
+				templateUrl: 'public/main/views/main.view.html',
 				controller: 'principalCtrl'
 			}).
 			when('/404',{

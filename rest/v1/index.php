@@ -13,7 +13,7 @@ session_start();
 
 //EntidadesRESTFULL
 require 'models/connect.php';
-//require 'models/general.php';
+require 'models/general.php';
 
 require 'models/User.php';
 //require 'models/Reporte.php';

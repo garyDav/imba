@@ -1,8 +1,19 @@
 CREATE DATABASE imba;
 use imba;
 
+CREATE TABLE business (
+	id int PRIMARY KEY AUTO_INCREMENT NOT NULL,
+	name varchar(50),
+	place varchar(255),
+	latitude varchar(255),
+	length varchar(255),
+	fec date,
+	active tinyint(1)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
 CREATE TABLE user (
 	id int PRIMARY KEY AUTO_INCREMENT NOT NULL,
+	id_business int,
 	ci int,
 	ex varchar(3),
 	name varchar(50),
@@ -10,12 +21,35 @@ CREATE TABLE user (
 	email varchar(100),
 	pwd varchar(100),
 	type varchar(5),
-	last_connection datetime,
-	registered date
+	fec date,
+	fec_up datetime
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
+CREATE TABLE order (
+	id int PRIMARY KEY AUTO_INCREMENT NOT NULL,
+	id_user int,
+	reference varchar(255),
+	sale float,
+	fec date,
+	fec_up date
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
+CREATE TABLE products (
+	id int PRIMARY KEY AUTO_INCREMENT NOT NULL,
+	cod varchar(15),
+	name varchar(150),
+	description text,
+	price float,
+	tipo varchar(10)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
+CREATE TABLE contains (
+	id int PRIMARY KEY AUTO_INCREMENT NOT NULL,
+	id_order int,
+	id_products int,
+	quantity int,
+	price float
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 
 
