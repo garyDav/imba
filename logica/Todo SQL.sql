@@ -120,6 +120,22 @@ BEGIN
 	END IF;
 END //
 
+DROP PROCEDURE IF EXISTS pInsertBusiness;
+CREATE PROCEDURE pInsertBusiness (
+	IN v_name varchar(50),
+	IN v_place varchar(255),
+	IN v_latitude varchar(255),
+	IN v_length varchar(255)
+)
+BEGIN
+	IF NOT EXISTS(SELECT id FROM business WHERE name LIKE v_name) THEN
+		INSERT INTO business VALUES(null,v_name,v_place,v_latitude,v_length,CURRENT_TIMESTAMP);
+		SELECT @@identity AS id,'not' AS error, 'Empresa registrada.' AS msj;
+	ELSE
+		SELECT 'yes' error,'Error: Nombre de la empresa ya registrada.' msj;
+	END IF;
+END //
+
 
 
 

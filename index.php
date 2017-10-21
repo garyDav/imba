@@ -157,6 +157,7 @@ if( !isset( $_SESSION['userId'] ) ){
     
     <!-- Service -->
     <script src="public/user/service.js"></script>
+    <script src="public/business/service.js"></script>
     <!--
     <script src="public/graphics/service.js"></script>
     -->

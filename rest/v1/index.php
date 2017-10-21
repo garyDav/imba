@@ -16,8 +16,8 @@ require 'models/connect.php';
 require 'models/general.php';
 
 require 'models/User.php';
+require 'models/Business.php';
 //require 'models/Reporte.php';
-//require 'models/Client.php';
 //end EntidadesRESTFULL
 
 $app->run();
