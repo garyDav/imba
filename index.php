@@ -146,11 +146,13 @@ if( !isset( $_SESSION['userId'] ) ){
 	<!-- Module -->
     <script src="public/graphics/module.js"></script>
     <script src="public/user/module.js"></script>
+    <script src="public/business/module.js"></script>
     <!-- Fin Module -->
     
     <!-- Route -->
     <script src="public/graphics/route.js"></script>
     <script src="public/user/route.js"></script>
+    <script src="public/business/route.js"></script>
     <!-- Fin Route -->
     
     <!-- Service -->
@@ -163,6 +165,7 @@ if( !isset( $_SESSION['userId'] ) ){
     <!-- Controllers -->
     <script src="public/graphics/controller.js"></script>
     <script src="public/user/controller.js"></script>
+    <script src="public/business/controller.js"></script>
     <!-- Fin Controllers -->
 
 

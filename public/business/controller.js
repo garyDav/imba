@@ -1,8 +1,9 @@
 // ================================================
 //   Controlador de Empresas
 // ================================================
-angular.module('graphicModule').controller('graphicCtrl', ['$scope', function($scope){
+angular.module('businessModule').controller('businessCtrl', ['$scope', function($scope){
 
-	$scope.activar('mGraphic','','Graficos','todos los graficos');
+	//$scope.activar('mGraphic','','Graficos','todos los graficos');
+	console.log("estoy en empresas");
 
 }]);

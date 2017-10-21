@@ -22,25 +22,39 @@ CREATE TABLE user (
 	pwd varchar(100),
 	type varchar(5),
 	fec date,
-	fec_up datetime
+	fec_up datetime,
+
+	FOREIGN KEY (id_business) REFERENCES business(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
-CREATE TABLE order (
+CREATE TABLE orders (
 	id int PRIMARY KEY AUTO_INCREMENT NOT NULL,
 	id_user int,
 	reference varchar(255),
 	sale float,
 	fec date,
-	fec_up date
+	fec_up date,
+
+	FOREIGN KEY (id_user) REFERENCES user(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+CREATE TABLE type (
+	id int PRIMARY KEY AUTO_INCREMENT NOT NULL,
+	name varchar(10),
+	quantity int
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 CREATE TABLE products (
 	id int PRIMARY KEY AUTO_INCREMENT NOT NULL,
+	id_type int,
 	cod varchar(15),
 	name varchar(150),
 	description text,
 	price float,
-	tipo varchar(10)
+	stock int,
+	unity int,
+
+	FOREIGN KEY (id_type) REFERENCES type(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 CREATE TABLE contains (
@@ -48,7 +62,11 @@ CREATE TABLE contains (
 	id_order int,
 	id_products int,
 	quantity int,
-	price float
+	unity int,
+	price float,
+
+	FOREIGN KEY (id_order) REFERENCES orders(id),
+	FOREIGN KEY (id_products) REFERENCES products(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 
