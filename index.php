@@ -27,7 +27,7 @@ if( !isset( $_SESSION['userId'] ) ){
 	<link rel="stylesheet" href="app/css/ionicons.min.css">
 
 	<link rel="stylesheet" href="app/css/AdminLTE.css">
-	<link rel="stylesheet" href="app/css/skin-purple.min.css">
+	<link rel="stylesheet" href="app/css/skin-green-light.min.css">
     <link rel="stylesheet" href="app/css/sweetalert.css">
 	<!-- Fin Librerias CSS-->
     <link rel="stylesheet" href="app/css/animate.css">
@@ -39,7 +39,7 @@ if( !isset( $_SESSION['userId'] ) ){
             <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
 </head>
-<body class="hold-transition skin-purple sidebar-mini" ng-controller="mainCtrl">
+<body class="hold-transition skin-green-light sidebar-mini" ng-controller="mainCtrl">
 
 
 	<!--<div>
@@ -69,18 +69,18 @@ if( !isset( $_SESSION['userId'] ) ){
                 <div class="navbar-custom-menu">
                     <ul class="nav navbar-nav">
 
-                        <!-- Messages: style can be found in dropdown.less-->
+                        <!-- Messages: style can be found in dropdown.less
                         <li class="dropdown messages-menu"
                                 ng-include="'public/main/views/message.view.html'">
                         </li>
-                        <!-- /.messages-menu -->
+                         /.messages-menu -->
 
-                        <!-- Notifications Menu -->
+                        <!-- Notifications Menu
                         <li class="dropdown notifications-menu"
                                 ng-include="'public/main/views/notifications.view.html'">
                         </li>
 
-                        <!-- User Account Menu -->
+                        User Account Menu -->
                         <li class="dropdown user user-menu"
                                 ng-include="'public/main/views/user.view.html'">
                         </li>
@@ -147,17 +147,20 @@ if( !isset( $_SESSION['userId'] ) ){
     <script src="public/graphics/module.js"></script>
     <script src="public/user/module.js"></script>
     <script src="public/business/module.js"></script>
+    <script src="public/products/module.js"></script>
     <!-- Fin Module -->
     
     <!-- Route -->
     <script src="public/graphics/route.js"></script>
     <script src="public/user/route.js"></script>
     <script src="public/business/route.js"></script>
+    <script src="public/products/route.js"></script>
     <!-- Fin Route -->
     
     <!-- Service -->
     <script src="public/user/service.js"></script>
     <script src="public/business/service.js"></script>
+    <script src="public/products/service.js"></script>
     <!--
     <script src="public/graphics/service.js"></script>
     -->
@@ -167,6 +170,7 @@ if( !isset( $_SESSION['userId'] ) ){
     <script src="public/graphics/controller.js"></script>
     <script src="public/user/controller.js"></script>
     <script src="public/business/controller.js"></script>
+    <script src="public/products/controller.js"></script>
     <!-- Fin Controllers -->
 
 

@@ -1,24 +1,36 @@
 // ================================================
 //   Controlador de usuarios
 // ================================================
-angular.module('userModule').controller('userCtrl', ['$scope','$routeParams', 'userService', function($scope, $routeParams, userService){
+angular.module('userModule').controller('userCtrl', ['$scope', 'userService', function($scope, userService){
 
-	var pag = $routeParams.pag;
+	var pag = 1;
 
+	//$scope.bussines = {nombre:["Santa Cruz de la Sierra","El Alto","La Paz","Cochabamba","Oruro","Sucre","Tarija","Potosí","Sacaba","Quillacollo","Montero","Trinidad","Riberalta","Warnes","La Guardia","Viacha","Yacuiba","Colcapirhua","Tiquipaya","Cobija","Vinto","Guayaramerín","Villazón","Villa Yapacaní","Villa Montes","Bermejo","Camiri","Tupiza","Llallagua","San Ignacio de Velasco","San Julián","Huanuni"]};
+	$scope.bussines = {};
 	$scope.activar('mUsers','','Usuarios','lista de usuarios');
 	$scope.users   = {};
 	$scope.userSel = {};
 	$scope.load = true;
 
-	//Edad Minima
-	var em = new Date();
-	em.setFullYear(em.getFullYear()-70);
-	$scope.edadMinima = ""+em.getFullYear()+"-01-01";
 
-	//Edad Maxima
-	var me = new Date();
-	me.setFullYear(me.getFullYear()-18);
-	$scope.edadMaxima = ""+me.getFullYear()+"-01-01";
+	$scope.completeReg = function(string){
+        if(string) {
+            $scope.hidethis = false;
+            var output = [];
+            angular.forEach($scope.bussines, function(element){ 
+                if(element.name.toLowerCase().indexOf(string.toLowerCase()) >= 0)  {
+                    output.push(element);
+                }
+            });
+            $scope.filterObj = output;
+        } else
+            $scope.filterObj = [];
+    };
+    $scope.fillTextbox = function(elem){
+       $scope.userSel.id_business = elem.id;
+       $scope.userSel.complete = elem.name;
+       $scope.hidethis = true;
+    };
 
 
 	$scope.moverA = function( pag ){
@@ -41,6 +53,12 @@ angular.module('userModule').controller('userCtrl', ['$scope','$routeParams', 'u
 		// console.log( user );
 		angular.copy( user, $scope.userSel );
 		$("#modal_user").modal();
+
+
+		userService.cargarEmpresas().then( function(response){
+			$scope.bussines = response;
+			console.log($scope.bussines);
+		});
 
 	}
 
@@ -67,7 +85,7 @@ angular.module('userModule').controller('userCtrl', ['$scope','$routeParams', 'u
 	$scope.eliminar = function( id ){
 
 		swal({
-			title: "¿Esta seguro de eliminar?",
+			title: "¿Esta seguro desactivar la cuenta?",
 			text: "¡Si confirma esta acción eliminará el registro!",
 			type: "warning",
 			showCancelButton: true,
@@ -77,7 +95,7 @@ angular.module('userModule').controller('userCtrl', ['$scope','$routeParams', 'u
 		},
 		function(){
 			userService.eliminar( id ).then(function(){
-				swal("Eliminado!", "Registro eliminado correctamente.", "success");
+				swal("Eliminado!", "Usuario desactivado correctamente.", "success");
 			});
 		});
 

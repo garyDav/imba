@@ -15,6 +15,19 @@
 
         <div class="modal-body">
 
+
+
+          <div class="form-group">
+            <label>Empresa: #{{userSel.id_business}} </label>
+            <div class="form-group">
+              <input type="hidden" ng-model="userSel.id_business">
+            </div>
+            <input type="text" name="element" id="element" ng-model="userSel.complete" ng-keyup="completeReg(userSel.complete)" class="form-control" placeholder="Ingrese la empresa" autocomplete="off" required />
+            <ul class="list-group margin-top-0" ng-model="hidethis" ng-hide="hidethis">
+                <li class="list-group-item select2" ng-repeat="elem in filterObj" ng-click="fillTextbox(elem)">#{{elem.id}}: {{elem.name}}</li>
+            </ul>
+          </div>
+
           <div class="form-group">
             <label>CI</label>
             <input type="text" class="form-control" placeholder="CI"
@@ -23,8 +36,19 @@
 
           <div class="form-group">
             <label>Expedido</label>
-            <input type="text" class="form-control" placeholder="Expedido"
+            <select type="text" class="form-control supad" placeholder="Expedido"
                 ng-model="userSel.ex" required>
+                <option value="" disabled selected>Expedido </option>
+                <option value="Ch">Chuquisaca</option>
+                <option value="Pt">Potosi</option>
+                <option value="Or">Oruro</option>
+                <option value="Lp">La paz</option>
+                <option value="Cb">Cochabamba</option>
+                <option value="Sc">Santa Cruz</option>
+                <option value="Tj">Tarija</option>
+                <option value="Bn">Beni</option>
+                <option value="Pa">Pando</option>
+            </select>
           </div>
 
 
@@ -56,8 +80,10 @@
             <label>Nivel</label>
             <select type="text" class="form-control" placeholder="Nivel de usuario"
                 ng-model="userSel.type" required>
-                <option value="user">Usuario</option>
-                <option value="admin">Administrador</option>
+                <option value="jefev">Jefe Ventas</option>
+                <option value="jefes">Supervisor de despacho</option>
+                <option value="user">Cliente</option>
+                <option value="opera">Operador</option>
             </select>
           </div>
 

@@ -1,5 +1,5 @@
 <ol class="breadcrumb animated fadeIn fast">
-    <li><a href="/prestamos"><i class="fa fa-dashboard"></i> Principal</a></li>
+    <li><a href="/imba"><i class="fa fa-dashboard"></i> Principal</a></li>
     <li class="active">Usuarios</li>
 </ol>
 <!-- /.filtros -->
@@ -38,10 +38,11 @@
 					<th><a class="mano" ng-click="columna='ci'; reverse = !reverse;">CI</a></th>
 					<th><a class="mano" ng-click="columna='name'; reverse = !reverse;">Nombre</a></th>
 					<th><a class="mano" ng-click="columna='last_name'; reverse = !reverse;">Apellido</a></th>
-					<th><a class="mano" ng-click="columna='civil_status'; reverse = !reverse;">Correo </a></th>
-					<th><a class="mano" ng-click="columna='civil_status'; reverse = !reverse;">Nivel </a></th>
-					<th><a class="mano" ng-click="columna='civil_status'; reverse = !reverse;">Ultima conexion</a></th>
-					<th><a class="mano" ng-click="columna='registered'; reverse = !reverse;">Registrado</a></th>
+					<th><a class="mano" ng-click="columna='email'; reverse = !reverse;">Correo </a></th>
+					<th><a class="mano" ng-click="columna='type'; reverse = !reverse;">Nivel </a></th>
+					<th><a class="mano" ng-click="columna='fec_up'; reverse = !reverse;">Ultima conexion</a></th>
+					<th><a class="mano" ng-click="columna='fec'; reverse = !reverse;">Registrado</a></th>
+					<th><a class="mano" ng-click="columna='active'; reverse = !reverse;">Activado</a></th>
 					<th>Acción</th>
 				</tr>
 			</thead>
@@ -53,8 +54,10 @@
 					<td>{{ user.last_name }}</td>
 					<td>{{ user.email }}</td>
 					<td>{{ user.type }}</td>
-					<td>{{ user.last_connection | date:"short" }}</td>
-					<td>{{ user.registered | date:"fullDate" }}</td>
+					<td>{{ user.fec_up | date:"short" }}</td>
+					<td>{{ user.fec | date:"fullDate" }}</td>
+					<td ng-show="user.active == '1'" class="success"><i class="fa fa-check mano" aria-hidden="true"></i></td>
+					<td ng-show="user.active == '0'" class="danger"><i class="fa fa-times mano" aria-hidden="true"></i></td>
 
 					<td>
 						<a ng-click="mostrarModal( user )" class="btn btn-warning"><i class="fa fa-edit"></i></a>

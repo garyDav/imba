@@ -1,0 +1,113 @@
+<ol class="breadcrumb animated fadeIn fast">
+    <li><a href="/imba"><i class="fa fa-dashboard"></i> Principal</a></li>
+    <li class="active">Productos</li>
+</ol>
+<!-- /.filtros -->
+<div class="filtros">
+<div class="busqueda linea b-largo">
+  <label for="busqueda"><i class="fa fa-search mano" aria-hidden="true"></i></label>
+  <input id="busqueda" type="text" placeholder="Busque aqui..." ng-model="busqueda">
+</div>
+</div>
+<!-- /.Fin filtros -->
+
+<div class="row">
+
+	<div class="col-md-12">
+	  <div class="box">
+	    
+	    <div class="box-header with-border">
+	      <h3 class="box-title">Productos</h3>
+	
+			<div class="box-tools hidden-xs">
+	            <div class="input-group">
+	              <a class="btn btn-primary"
+	              	ng-click="mostrarModal({})"><i class="fa fa-plus"></i> Agregar Productos</a>
+	            </div>
+	        </div>
+
+	    </div>
+	    <!-- /.box-header -->
+	    
+	    <div class="box-body" ng-hide="load || !products.products.length">
+	      
+	      <table class="table table-bordered responsive-table-large">
+			<thead>
+				<tr>
+					<th><a class="mano" ng-click="columna='id'; reverse = !reverse;">#</a></th>
+					<th><a class="mano" ng-click="columna='cod'; reverse = !reverse;">Código</a></th>
+					<th><a class="mano" ng-click="columna='name'; reverse = !reverse;">Nombre</a></th>
+					<th><a class="mano" ng-click="columna='description'; reverse = !reverse;">Descripción</a></th>
+					<th><a class="mano" ng-click="columna='price'; reverse = !reverse;">Precio</a></th>
+					<th><a class="mano" ng-click="columna='quantity'; reverse = !reverse;">Stock</a></th>
+					<th><a class="mano" ng-click="columna='unity'; reverse = !reverse;">Unidad</a></th>
+					<th><a class="mano" ng-click="columna='fec'; reverse = !reverse;">Fecha</a></th>
+					<th><a class="mano" ng-click="columna='expiration'; reverse = !reverse;">Vencimiento</a></th>
+					<th><a class="mano" ng-click="columna='active'; reverse = !reverse;">Activado</a></th>
+					<th>Acción</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="el in products.products | filter:busqueda | orderBy:columna:reverse">
+					<td>{{ el.id }}</td>
+					<td>{{ el.cod }}</td>
+					<td>{{ el.name }}</td>
+					<td>{{ el.description }}</td>
+					<td>{{ el.price }}</td>
+					<td>{{ el.quantity }}</td>
+					<td>{{ el.unity }}</td>
+					<td>{{ el.fec | date:"fullDate" }}</td>
+					<td>{{ el.expiration | date:"fullDate" }}</td>
+					<td ng-show="el.active == '1'" class="success"><i class="fa fa-check mano" aria-hidden="true"></i></td>
+					<td ng-show="el.active == '0'" class="danger"><i class="fa fa-times mano" aria-hidden="true"></i></td>
+
+					<td>
+						<a ng-click="mostrarModal( el )" class="btn btn-warning"><i class="fa fa-edit"></i></a>
+						<a ng-click="eliminar( el.id )" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+					</td>
+				</tr>
+			</tbody>
+
+	      </table>
+
+	
+		</div>
+		<div class="box-body" ng-show="load">
+			<div class="cargando">
+				<i class="fa fa-spinner fa-pulse fa-2x fa-fw" aria-hidden="true"></i>
+				Cargando...
+			</div>
+		</div>
+		<div class="box-body" ng-show="!load && !products.products.length">
+			<div class="cargando">
+				Ingrese nuevos registros.
+			</div>
+		</div>
+
+		<div class="box-footer clearfix" ng-show="products.total_paginas > 1">
+          <ul class="pagination pagination-sm no-margin pull-right">
+            <li><a class="mano" ng-click="moverA(1)">«</a></li>
+
+			<li ng-repeat="pag in products.paginas"
+				ng-class="{
+					'active': products.pag_actual === pag
+				}">
+				<a class="mano" ng-click="moverA(pag)">{{ pag }}</a>
+			</li>
+
+            <li><a class="mano" ng-click="moverA( products.total_paginas )" >»</a></li>
+          </ul>
+        </div>
+
+
+
+		</div>
+	</div>
+
+</div>
+
+
+
+<div class="btn-agregar visible-xs" ng-click="mostrarModal({})"><i class="fa fa-paper-plane-o i-agregar" ></i></div>
+<div ng-include="'public/products/views/modal.view.html'"></div>
+

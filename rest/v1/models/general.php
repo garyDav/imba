@@ -41,7 +41,7 @@ function get_todo_paginado( $tabla, $pagina = 1, $por_pagina = 20 ){
 	}
 
 
-	$sql = "SELECT * from $tabla limit $desde, $por_pagina";
+	$sql = "SELECT * from $tabla ORDER BY id DESC limit $desde, $por_pagina;";
 	$result = $conex->prepare($sql);
 	$result->execute();
 	$datos = $result->fetchAll(PDO::FETCH_OBJ);

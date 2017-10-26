@@ -1,9 +1,9 @@
 <?php if(!defined('SPECIALCONSTANT')) die(json_encode([array('id'=>'0','error'=>'Acceso Denegado')]));
 
-$app->get('/business',function() use($app) {
+$app->get('/type',function() use($app) {
 	try {
 		$conex = getConex();
-		$sql = "SELECT id,name FROM business WHERE active='1';";
+		$sql = "SELECT id,name,quantity FROM type;";
 		$result = $conex->prepare( $sql );
 		$result->execute();
 		$conex = null;
@@ -19,7 +19,7 @@ $app->get('/business',function() use($app) {
 
 
 
-$app->get('/business/:id',function($id) use($app) {
+$app->get('/products/:id',function($id) use($app) {
 	try {
 		//sleep(1);
 		if( isset( $id ) ){
@@ -27,7 +27,7 @@ $app->get('/business/:id',function($id) use($app) {
 		}else{
 			$pag = 1;
 		}
-		$res = get_todo_paginado( 'business', $pag );
+		$res = get_todo_paginado( 'products', $pag );
 
 		$app->response->headers->set('Content-type','application/json');
 		$app->response->headers->set('Access-Control-Allow-Origin','*');
@@ -38,7 +38,7 @@ $app->get('/business/:id',function($id) use($app) {
 	}
 });
 
-$app->post("/business/",function() use($app) {
+$app->post("/products/",function() use($app) {
 	try {
 		$postdata = file_get_contents("php://input");
 
@@ -49,27 +49,36 @@ $app->post("/business/",function() use($app) {
 
 		if( isset( $request['id'] )  ){  // ACTUALIZAR
 
-			$sql = "UPDATE business 
+			$sql = "UPDATE products 
 						SET
+							id_type 	 = '". $request['id_type'] ."',
+							cod 	 = '". $request['cod'] ."',
 							name 	 = '". $request['name'] ."',
-							place 	 = '". $request['place'] ."',
-							latitude = '". $request['latitude'] ."',
-							length   = '". $request['length'] ."'
+							description 	 = '". $request['description'] ."',
+							price 	 = '". $request['price'] ."',
+							quantity 	 = '". $request['quantity'] ."',
+							unity 	 = '". $request['unity'] ."',
+							expiration 	 = '". $request['expiration'] ."'
+							
 					WHERE id=" . $request['id'].";";
 
 			$hecho = $conex->prepare( $sql );
 			$hecho->execute();
 			$conex = null;
 			
-			$res = array( 'id'=>$request['id'], 'error'=>'not', 'msj'=>'Registro actualizado' );
+			$res = array( 'id'=>$request['id'], 'error'=>'not', 'msj'=>'Producto actualizado' );
 
 		}else{  // INSERT
 
-			$sql = "CALL pInsertBusiness(
+			$sql = "CALL pInsertProducts(
+						'". $request['id_type'] . "',
+						'". $request['cod'] . "',
 						'". $request['name'] . "',
-						'". $request['place'] . "',
-						'". $request['latitude'] . "',
-						'". $request['length'] . "');";
+						'". $request['description'] . "',
+						'". $request['price'] . "',
+						'". $request['quantity'] . "',
+						'". $request['unity'] . "',
+						'". $request['expiration'] . "');";
 
 			$hecho = $conex->prepare( $sql );
 			$hecho->execute();
@@ -88,10 +97,10 @@ $app->post("/business/",function() use($app) {
 	}
 });
 
-$app->delete('/business/:id',function($id) use($app) {
+$app->delete('/products/:id',function($id) use($app) {
 	try {
 		$conex = getConex();
-		$result = $conex->prepare("UPDATE business 
+		$result = $conex->prepare("UPDATE products 
 									SET active   = '0'
 								   WHERE id=".$id.";");
 

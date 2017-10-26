@@ -17,6 +17,7 @@ require 'models/general.php';
 
 require 'models/User.php';
 require 'models/Business.php';
+require 'models/Products.php';
 //require 'models/Reporte.php';
 //end EntidadesRESTFULL
 

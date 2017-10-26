@@ -32,6 +32,7 @@ $app->post("/user/",function() use($app) {
 
 			$sql = "UPDATE user 
 						SET
+							id_business	  = '". $request['id_business'] ."',
 							ci            = '". $request['ci'] ."',
 							ex            = '". $request['ex'] ."',
 							name          = '". $request['name'] ."',
@@ -54,6 +55,7 @@ $app->post("/user/",function() use($app) {
 			$pwd = sha1($salt.$pwd);
 
 			$sql = "CALL pInsertUser(
+						'". $request['id_business'] . "',
 						'". $request['ci'] . "',
 						'". $request['ex'] . "',
 						'". $request['name'] . "',
@@ -82,14 +84,16 @@ $app->post("/user/",function() use($app) {
 $app->delete('/user/:id',function($id) use($app) {
 	try {
 		$conex = getConex();
-		$result = $conex->prepare("DELETE FROM user WHERE id='$id'");
+		$result = $conex->prepare("UPDATE user 
+									 SET active = '0'
+								   WHERE id=".$id.";");
 
 		$result->execute();
 		$conex = null;
 
 		$app->response->headers->set('Content-type','application/json');
 		$app->response->status(200);
-		$app->response->body(json_encode(array('id'=>$id,'error'=>'not','msj'=>'Registro eliminado correctamente.')));
+		$app->response->body(json_encode(array('id'=>$id,'error'=>'not','msj'=>'Usuario desactivado correctamente.')));
 
 	} catch(PDOException $e) {
 		echo 'Error: '.$e->getMessage();

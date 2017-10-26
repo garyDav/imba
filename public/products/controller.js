@@ -1,21 +1,41 @@
 // ================================================
 //   Controlador de Empresas
 // ================================================
-angular.module('businessModule').controller('businessCtrl', ['$scope','businessService', function($scope,businessService){
+angular.module('productsModule').controller('productsCtrl', ['$scope','productsService', function($scope,productsService){
 
 	//var pag = $routeParams.pag;
 	var pag = 1;
 
-	$scope.activar('mBusiness','','Empresas','lista de empresas');
-	$scope.business   = {};
+	$scope.p_type  = {}; 
+	$scope.activar('mProducts','','Productos','lista de productos');
+	$scope.products= {};
 	$scope.objSelt = {};
-	$scope.load = true;
+	$scope.load    = true;
+
+	$scope.completeReg = function(string){
+        if(string) {
+            $scope.hidethis = false;
+            var output = [];
+            angular.forEach($scope.p_type, function(element){ 
+                if(element.name.toLowerCase().indexOf(string.toLowerCase()) >= 0)  {
+                    output.push(element);
+                }
+            });
+            $scope.filterObj = output;
+        } else
+            $scope.filterObj = [];
+    };
+    $scope.fillTextbox = function(elem){
+       $scope.objSelt.id_type = elem.id;
+       $scope.objSelt.complete = elem.name;
+       $scope.hidethis = true;
+    };
 
 	$scope.moverA = function( pag ){
 		$scope.load = true;
 
-		businessService.cargarPagina( pag ).then( function(){
-			$scope.business = businessService;
+		productsService.cargarPagina( pag ).then( function(){
+			$scope.products = productsService;
 			$scope.load = false;
 		});
 
@@ -30,7 +50,12 @@ angular.module('businessModule').controller('businessCtrl', ['$scope','businessS
 
 		// console.log( user );
 		angular.copy( obj, $scope.objSelt );
-		$("#modal_business").modal();
+		$("#modal_products").modal();
+
+		productsService.cargarType().then( function(response){
+			$scope.p_type = response;
+			console.log($scope.p_type);
+		});
 
 	}
 
@@ -39,10 +64,10 @@ angular.module('businessModule').controller('businessCtrl', ['$scope','businessS
 	// ================================================
 	$scope.guardar = function( obj, form){
 
-		businessService.guardar( obj ).then(function(){
+		productsService.guardar( obj ).then(function(){
 
 			// codigo cuando se actualizo
-			$("#modal_business").modal('hide');
+			$("#modal_products").modal('hide');
 			$scope.objSelt = {};
 
 			form.autoValidateFormOptions.resetForm();
@@ -58,7 +83,7 @@ angular.module('businessModule').controller('businessCtrl', ['$scope','businessS
 
 		swal({
 			title: "¿Esta seguro de eliminar?",
-			text: "¡Si confirma esta acción dará de baja la empresa!",
+			text: "¡Si confirma esta acción dará de baja el producto!",
 			type: "warning",
 			showCancelButton: true,
 			confirmButtonColor: "#DD6B55",
@@ -66,7 +91,7 @@ angular.module('businessModule').controller('businessCtrl', ['$scope','businessS
 			closeOnConfirm: false
 		},
 		function(){
-			businessService.eliminar( id ).then(function(){
+			productsService.eliminar( id ).then(function(){
 				swal("Eliminado!", "Registro eliminado correctamente.", "success");
 			});
 		});

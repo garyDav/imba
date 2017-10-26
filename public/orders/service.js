@@ -1,11 +1,11 @@
-angular.module('userModule').factory('userService', ['$http', '$q', function($http, $q){
+angular.module('businessModule').factory('businessService', ['$http', '$q', function($http, $q){
 
 	var self = {
 
 		'cargando'		: false,
 		'err'     		: false, 
 		'conteo' 		: 0,
-		'users' 		: [],
+		'business' 		: [],
 		'pag_actual'    : 1,
 		'pag_siguiente' : 1,
 		'pag_anterior'  : 1,
@@ -13,11 +13,11 @@ angular.module('userModule').factory('userService', ['$http', '$q', function($ht
 		'paginas'	    : [],
 
 
-		guardar: function( user ){
+		guardar: function( business ){
 
 			var d = $q.defer();
 
-			$http.post('rest/v1/user/' , user )
+			$http.post('rest/v1/business/' , business )
 				.success(function( respuesta ){
 
 					if ( respuesta.error == 'not' ) {
@@ -39,7 +39,7 @@ angular.module('userModule').factory('userService', ['$http', '$q', function($ht
 
 			var d = $q.defer();
 
-			$http.delete('rest/v1/user/' + id )
+			$http.delete('rest/v1/business/' + id )
 				.success(function( respuesta ){
 
 					self.cargarPagina( self.pag_actual  );
@@ -56,14 +56,14 @@ angular.module('userModule').factory('userService', ['$http', '$q', function($ht
 
 			var d = $q.defer();
 
-			$http.get('rest/v1/user/' + pag )
+			$http.get('rest/v1/business/' + pag )
 				.success(function( data ){
 					console.log( data );
 					if(data) {
 
 						self.err           = data.err;
 						self.conteo        = data.conteo;
-						self.users         = data.user;
+						self.business      = data.business;
 						self.pag_actual    = data.pag_actual;
 						self.pag_siguiente = data.pag_siguiente;
 						self.pag_anterior  = data.pag_anterior;
@@ -75,24 +75,6 @@ angular.module('userModule').factory('userService', ['$http', '$q', function($ht
 				});
 
 			return d.promise;
-		},
-
-		cargarEmpresas: function(){
-
-			var d = $q.defer();
-
-			$http.get('rest/v1/business')
-				.success(function( response ){
-
-				d.resolve( response );
-
-			}).error(function( err ) {
-				d.reject( err );
-				console.error( err );
-			});
-
-			return d.promise;
-
 		}
 
 

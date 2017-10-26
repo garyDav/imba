@@ -8,7 +8,8 @@
 		'jcs-autoValidate',
 		'graphicModule',
 		'userModule',
-		'businessModule'
+		'businessModule',
+		'productsModule'
 	], ["$provide", function($provide) {
 		var PLURAL_CATEGORY = {ZERO: "zero", ONE: "one", TWO: "two", FEW: "few", MANY: "many", OTHER: "other"};
 		$provide.value("$locale", {
@@ -146,7 +147,7 @@
 			logout: function() {
 				$http.post('php/destroy_session.php');
 				//$location.path('/login/#/ingresar');
-				window.location="http://localhost/project/login/";
+				window.location="http://localhost/imba/login/";
 			},
 			config:{},
 			cargar: function(){
@@ -191,10 +192,10 @@
 			//console.log($scope.titulo);
 
 			$scope.mPrincipal = "";
+			$scope.mBusiness = "";
 			$scope.mUsers = "";
-			$scope.mClients = "";
-			$scope.mGives = "";
-			$scope.mReport = "";
+			$scope.mProducts = "";
+			$scope.mOrders = "";
 			$scope.mGraphic = "";
 
 			$scope[menu] = 'active';

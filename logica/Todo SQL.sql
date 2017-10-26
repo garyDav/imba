@@ -23,14 +23,14 @@ CREATE TABLE user (
 	type varchar(5),
 	fec date,
 	fec_up datetime,
+	active tinyint(1),
 
 	FOREIGN KEY (id_business) REFERENCES business(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 CREATE TABLE orders (
 	id int PRIMARY KEY AUTO_INCREMENT NOT NULL,
-	id_user int,
-	reference varchar(255),
+	id_user int, reference varchar(255),
 	sale float,
 	fec date,
 	fec_up date,
@@ -51,8 +51,11 @@ CREATE TABLE products (
 	name varchar(150),
 	description text,
 	price float,
-	stock int,
+	quantity int,
 	unity int,
+	fec date,
+	expiration date,
+	active tinyint(1),
 
 	FOREIGN KEY (id_type) REFERENCES type(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
@@ -103,6 +106,7 @@ END //
 
 DROP PROCEDURE IF EXISTS pInsertUser;
 CREATE PROCEDURE pInsertUser (
+	IN v_id_business int,
 	IN v_ci int,
 	IN v_ex varchar(3),
 	IN v_name varchar(50),
@@ -113,8 +117,8 @@ CREATE PROCEDURE pInsertUser (
 )
 BEGIN
 	IF NOT EXISTS(SELECT id FROM user WHERE email LIKE v_email) THEN
-		INSERT INTO user VALUES(null,v_ci,v_ex,v_name,v_last_name,v_email,v_pwd,v_type,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP);
-		SELECT @@identity AS id,v_type AS tipo, 'not' AS error, 'Registro insertado.' AS msj;
+		INSERT INTO user VALUES(null,v_id_business,v_ci,v_ex,v_name,v_last_name,v_email,v_pwd,v_type,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,1);
+		SELECT @@identity AS id,v_type AS tipo, 'not' AS error, 'Usuario registrado correctamente.' AS msj;
 	ELSE
 		SELECT 'yes' error,'Error: Correo ya registrado.' msj;
 	END IF;
@@ -129,10 +133,30 @@ CREATE PROCEDURE pInsertBusiness (
 )
 BEGIN
 	IF NOT EXISTS(SELECT id FROM business WHERE name LIKE v_name) THEN
-		INSERT INTO business VALUES(null,v_name,v_place,v_latitude,v_length,CURRENT_TIMESTAMP);
+		INSERT INTO business VALUES(null,v_name,v_place,v_latitude,v_length,CURRENT_TIMESTAMP,1);
 		SELECT @@identity AS id,'not' AS error, 'Empresa registrada.' AS msj;
 	ELSE
 		SELECT 'yes' error,'Error: Nombre de la empresa ya registrada.' msj;
+	END IF;
+END //
+
+DROP PROCEDURE IF EXISTS pInsertProducts;
+CREATE PROCEDURE pInsertProducts (
+	IN v_id_type int,
+	IN v_cod varchar(15),
+	IN v_name varchar(150),
+	IN v_description text,
+	IN v_price float,
+	IN v_quantity int,
+	IN v_unity int,
+	IN v_expiration date
+)
+BEGIN
+	IF NOT EXISTS(SELECT id FROM products WHERE cod LIKE v_cod) THEN
+		INSERT INTO products VALUES(null,v_id_type,v_cod,v_name,v_description,v_price,v_quantity,v_unity,CURRENT_TIMESTAMP,v_expiration,1);
+		SELECT @@identity AS id,'not' AS error, 'Producto registrado correctamente.' AS msj;
+	ELSE
+		SELECT 'yes' error,'Error: Código del producto ya registrado.' msj;
 	END IF;
 END //
 
