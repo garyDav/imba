@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.2
--- http://www.phpmyadmin.net
+-- version 4.7.4
+-- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 21-10-2017 a las 15:06:33
--- Versión del servidor: 10.1.13-MariaDB
--- Versión de PHP: 7.0.8
+-- Tiempo de generación: 26-10-2017 a las 05:29:47
+-- Versión del servidor: 10.1.26-MariaDB
+-- Versión de PHP: 7.1.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -24,10 +26,28 @@ DELIMITER $$
 --
 -- Procedimientos
 --
-CREATE DEFINER=`root`@`localhost` PROCEDURE `pInsertUser` (IN `v_ci` INT, IN `v_ex` VARCHAR(3), IN `v_name` VARCHAR(50), IN `v_last_name` VARCHAR(50), IN `v_email` VARCHAR(100), IN `v_pwd` VARCHAR(100), IN `v_type` VARCHAR(5))  BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `pInsertBusiness` (IN `v_name` VARCHAR(50), IN `v_place` VARCHAR(255), IN `v_latitude` VARCHAR(255), IN `v_length` VARCHAR(255))  BEGIN
+IF NOT EXISTS(SELECT id FROM business WHERE name LIKE v_name) THEN
+INSERT INTO business VALUES(null,v_name,v_place,v_latitude,v_length,CURRENT_TIMESTAMP,1);
+SELECT @@identity AS id,'not' AS error, 'Empresa registrada.' AS msj;
+ELSE
+SELECT 'yes' error,'Error: Nombre de la empresa ya registrada.' msj;
+END IF;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `pInsertProducts` (IN `v_id_type` INT, IN `v_cod` VARCHAR(15), IN `v_name` VARCHAR(150), IN `v_description` TEXT, IN `v_price` FLOAT, IN `v_quantity` INT, IN `v_unity` INT, IN `v_expiration` DATE)  BEGIN
+IF NOT EXISTS(SELECT id FROM products WHERE cod LIKE v_cod) THEN
+INSERT INTO products VALUES(null,v_id_type,v_cod,v_name,v_description,v_price,v_quantity,v_unity,CURRENT_TIMESTAMP,v_expiration,1);
+SELECT @@identity AS id,'not' AS error, 'Producto registrado correctamente.' AS msj;
+ELSE
+SELECT 'yes' error,'Error: Código del producto ya registrado.' msj;
+END IF;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `pInsertUser` (IN `v_id_business` INT, IN `v_ci` INT, IN `v_ex` VARCHAR(3), IN `v_name` VARCHAR(50), IN `v_last_name` VARCHAR(50), IN `v_email` VARCHAR(100), IN `v_pwd` VARCHAR(100), IN `v_type` VARCHAR(5))  BEGIN
 IF NOT EXISTS(SELECT id FROM user WHERE email LIKE v_email) THEN
-INSERT INTO user VALUES(null,v_ci,v_ex,v_name,v_last_name,v_email,v_pwd,v_type,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP);
-SELECT @@identity AS id,v_type AS tipo, 'not' AS error, 'Registro insertado.' AS msj;
+INSERT INTO user VALUES(null,v_id_business,v_ci,v_ex,v_name,v_last_name,v_email,v_pwd,v_type,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,1);
+SELECT @@identity AS id,v_type AS tipo, 'not' AS error, 'Usuario registrado correctamente.' AS msj;
 ELSE
 SELECT 'yes' error,'Error: Correo ya registrado.' msj;
 END IF;
@@ -70,7 +90,8 @@ CREATE TABLE `business` (
 --
 
 INSERT INTO `business` (`id`, `name`, `place`, `latitude`, `length`, `fec`, `active`) VALUES
-(1, 'IMBA', 'lejos', '323323', '23323232', '2017-10-10', 1);
+(1, 'IMBA', 'lejos', '323323', '23323232', '2017-10-10', 1),
+(4, 'nombre', 'lugar', 'tatitud', 'longitud', '2017-10-25', 1);
 
 -- --------------------------------------------------------
 
@@ -115,8 +136,11 @@ CREATE TABLE `products` (
   `name` varchar(150) COLLATE utf8_spanish2_ci DEFAULT NULL,
   `description` text COLLATE utf8_spanish2_ci,
   `price` float DEFAULT NULL,
-  `stock` int(11) DEFAULT NULL,
-  `unity` int(11) DEFAULT NULL
+  `quantity` int(11) DEFAULT NULL,
+  `unity` int(11) DEFAULT NULL,
+  `fec` date NOT NULL,
+  `expiration` date NOT NULL,
+  `active` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 -- --------------------------------------------------------
@@ -130,6 +154,16 @@ CREATE TABLE `type` (
   `name` varchar(10) COLLATE utf8_spanish2_ci DEFAULT NULL,
   `quantity` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `type`
+--
+
+INSERT INTO `type` (`id`, `name`, `quantity`) VALUES
+(1, 'set', 20),
+(2, 'caja', 30),
+(3, 'bolsa', 10),
+(4, 'fardo', 20);
 
 -- --------------------------------------------------------
 
@@ -148,15 +182,16 @@ CREATE TABLE `user` (
   `pwd` varchar(100) COLLATE utf8_spanish2_ci DEFAULT NULL,
   `type` varchar(5) COLLATE utf8_spanish2_ci DEFAULT NULL,
   `fec` date DEFAULT NULL,
-  `fec_up` datetime DEFAULT NULL
+  `fec_up` datetime DEFAULT NULL,
+  `active` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
 -- Volcado de datos para la tabla `user`
 --
 
-INSERT INTO `user` (`id`, `id_business`, `ci`, `ex`, `name`, `last_name`, `email`, `pwd`, `type`, `fec`, `fec_up`) VALUES
-(1, 1, 4654654, 'Pt', 'Juan', 'Perez', 'juan@gmail.com', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'userc', '2017-10-20', '2017-10-20 00:00:00');
+INSERT INTO `user` (`id`, `id_business`, `ci`, `ex`, `name`, `last_name`, `email`, `pwd`, `type`, `fec`, `fec_up`, `active`) VALUES
+(1, 1, 4654654, 'Pt', 'Alvaro', 'Antezana', 'alvaro@gmail.com', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'jefev', '2017-10-20', '2017-10-20 00:00:00', 1);
 
 --
 -- Índices para tablas volcadas
@@ -211,32 +246,38 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT de la tabla `business`
 --
 ALTER TABLE `business`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
 --
 -- AUTO_INCREMENT de la tabla `contains`
 --
 ALTER TABLE `contains`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT de la tabla `orders`
 --
 ALTER TABLE `orders`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT de la tabla `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
 --
 -- AUTO_INCREMENT de la tabla `type`
 --
 ALTER TABLE `type`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
 --
 -- AUTO_INCREMENT de la tabla `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
 --
 -- Restricciones para tablas volcadas
 --
@@ -265,6 +306,7 @@ ALTER TABLE `products`
 --
 ALTER TABLE `user`
   ADD CONSTRAINT `user_ibfk_1` FOREIGN KEY (`id_business`) REFERENCES `business` (`id`);
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
