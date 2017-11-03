@@ -60,7 +60,23 @@ angular.module('productsModule').factory('productsService', ['$http', '$q', func
 				.success(function( respuesta ){
 
 					self.cargarPagina( self.pag_actual  );
-					d.resolve();
+					d.resolve(respuesta);
+
+				});
+
+			return d.promise;
+
+		},
+
+		habilitar: function( id ){
+
+			var d = $q.defer();
+
+			$http.delete('rest/v1/products/active/' + id )
+				.success(function( respuesta ){
+
+					self.cargarPagina( self.pag_actual  );
+					d.resolve(respuesta);
 
 				});
 
@@ -80,14 +96,7 @@ angular.module('productsModule').factory('productsService', ['$http', '$q', func
 
 						data.products.forEach(function(element,index,array) {
 							var values = element.expiration.split("-");
-							//var values = element.fec_pre.replace('-',',');
 							element.expiration = new Date(Number(values[0]), Number(values[1]-1), Number(values[2]));
-							//element.fec_pre = new Date(element.fec_pre);
-							/*element.amount = Number(element.amount);
-							element.month = Number(element.month);
-							element.fine = Number(element.fine);
-							element.interest = Number(element.interest);
-							element.gain = Number(element.gain);*/
 						});
 
 						self.err           = data.err;

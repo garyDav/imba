@@ -1,13 +1,13 @@
 (function(angular) {
 
 	'use strict';	
-	
-	angular.module('businessModule')
+
+	angular.module('ordersModule')
 	.config(['$routeProvider',function($routeProvider) {
 		$routeProvider.
-			when('/empresas',{
-				templateUrl: 'public/business/views/list.view.html',
-				controller: 'businessCtrl'
+			when('/orders',{
+				templateUrl: 'public/orders/views/list.view.html',
+				controller: 'ordersCtrl'
 			});
 	}]);
 

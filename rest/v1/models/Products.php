@@ -109,7 +109,26 @@ $app->delete('/products/:id',function($id) use($app) {
 
 		$app->response->headers->set('Content-type','application/json');
 		$app->response->status(200);
-		$app->response->body(json_encode(array('id'=>$id,'error'=>'not','msj'=>'Empresa desactivada correctamente.')));
+		$app->response->body(json_encode(array('id'=>$id,'error'=>'not','msj'=>'Producto desactivado correctamente.')));
+
+	} catch(PDOException $e) {
+		echo 'Error: '.$e->getMessage();
+	}
+})->conditions(array('id'=>'[0-9]{1,11}'));
+
+$app->delete('/products/active/:id',function($id) use($app) {
+	try {
+		$conex = getConex();
+		$result = $conex->prepare("UPDATE products 
+									SET active   = '1'
+								   WHERE id=".$id.";");
+
+		$result->execute();
+		$conex = null;
+
+		$app->response->headers->set('Content-type','application/json');
+		$app->response->status(200);
+		$app->response->body(json_encode(array('id'=>$id,'error'=>'not','msj'=>'Producto activado correctamente.')));
 
 	} catch(PDOException $e) {
 		echo 'Error: '.$e->getMessage();

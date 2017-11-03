@@ -37,6 +37,7 @@
 					<th><a class="mano" ng-click="columna='id'; reverse = !reverse;">#</a></th>
 					<th><a class="mano" ng-click="columna='name'; reverse = !reverse;">Nombre</a></th>
 					<th><a class="mano" ng-click="columna='place'; reverse = !reverse;">Lugar</a></th>
+					<th><a class="mano" ng-click="columna='account'; reverse = !reverse;">Cuenta</a></th>
 					<th><a class="mano" ng-click="columna='active'; reverse = !reverse;">Activado</a></th>
 					<th><a class="mano" ng-click="columna='fec'; reverse = !reverse;">Registrado</a></th>
 					<th>Acción</th>
@@ -47,13 +48,14 @@
 					<td>{{ em.id }}</td>
 					<td>{{ em.name }}</td>
 					<td>{{ em.place }}</td>
+					<td>{{ em.account }}</td>
 					<td ng-show="em.active == '1'" class="success"><i class="fa fa-check mano" aria-hidden="true"></i></td>
-					<td ng-show="em.active == '0'" class="danger"><i class="fa fa-times mano" aria-hidden="true"></i></td>
+					<td ng-click="habilitar(em.id)" ng-show="em.active == '0'" class="danger mano"><i class="fa fa-times mano" aria-hidden="true"></i></td>
 					<td>{{ em.fec | date:"fullDate" }}</td>
 
 					<td>
 						<a ng-click="mostrarModal( em )" class="btn btn-warning"><i class="fa fa-edit"></i></a>
-						<a ng-click="eliminar( em.id )" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+						<a ng-click="eliminar( em.id )" ng-hide="em.id == '1'" class="btn btn-danger"><i class="fa fa-trash"></i></a>
 					</td>
 				</tr>
 			</tbody>

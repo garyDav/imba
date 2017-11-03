@@ -43,7 +43,23 @@ angular.module('businessModule').factory('businessService', ['$http', '$q', func
 				.success(function( respuesta ){
 
 					self.cargarPagina( self.pag_actual  );
-					d.resolve();
+					d.resolve(respuesta);
+
+				});
+
+			return d.promise;
+
+		},
+
+		habilitar: function( id ){
+
+			var d = $q.defer();
+
+			$http.delete('rest/v1/business/active/' + id )
+				.success(function( respuesta ){
+
+					self.cargarPagina( self.pag_actual  );
+					d.resolve(respuesta);
 
 				});
 
@@ -60,6 +76,10 @@ angular.module('businessModule').factory('businessService', ['$http', '$q', func
 				.success(function( data ){
 					console.log( data );
 					if(data) {
+
+						data.business.forEach(function(element,index,array) {
+							element.account = Number(element.account);
+						});
 
 						self.err           = data.err;
 						self.conteo        = data.conteo;

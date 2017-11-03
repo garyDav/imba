@@ -59,7 +59,7 @@
 					<td>{{ el.fec | date:"fullDate" }}</td>
 					<td>{{ el.expiration | date:"fullDate" }}</td>
 					<td ng-show="el.active == '1'" class="success"><i class="fa fa-check mano" aria-hidden="true"></i></td>
-					<td ng-show="el.active == '0'" class="danger"><i class="fa fa-times mano" aria-hidden="true"></i></td>
+					<td ng-click="habilitar(el.id)" ng-show="el.active == '0'" class="danger mano"><i class="fa fa-times mano" aria-hidden="true"></i></td>
 
 					<td>
 						<a ng-click="mostrarModal( el )" class="btn btn-warning"><i class="fa fa-edit"></i></a>

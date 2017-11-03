@@ -53,6 +53,7 @@ $app->post("/business/",function() use($app) {
 						SET
 							name 	 = '". $request['name'] ."',
 							place 	 = '". $request['place'] ."',
+							account  = '". $request['account'] ."',
 							latitude = '". $request['latitude'] ."',
 							length   = '". $request['length'] ."'
 					WHERE id=" . $request['id'].";";
@@ -68,6 +69,7 @@ $app->post("/business/",function() use($app) {
 			$sql = "CALL pInsertBusiness(
 						'". $request['name'] . "',
 						'". $request['place'] . "',
+						'". $request['account'] . "',
 						'". $request['latitude'] . "',
 						'". $request['length'] . "');";
 
@@ -107,4 +109,22 @@ $app->delete('/business/:id',function($id) use($app) {
 	}
 })->conditions(array('id'=>'[0-9]{1,11}'));
 
+$app->delete('/business/active/:id',function($id) use($app) {
+	try {
+		$conex = getConex();
+		$result = $conex->prepare("UPDATE business 
+									SET active   = '1'
+								   WHERE id=".$id.";");
+
+		$result->execute();
+		$conex = null;
+
+		$app->response->headers->set('Content-type','application/json');
+		$app->response->status(200);
+		$app->response->body(json_encode(array('id'=>$id,'error'=>'not','msj'=>'Empresa activada correctamente.')));
+
+	} catch(PDOException $e) {
+		echo 'Error: '.$e->getMessage();
+	}
+})->conditions(array('id'=>'[0-9]{1,11}'));
 

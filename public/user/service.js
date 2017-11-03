@@ -43,7 +43,23 @@ angular.module('userModule').factory('userService', ['$http', '$q', function($ht
 				.success(function( respuesta ){
 
 					self.cargarPagina( self.pag_actual  );
-					d.resolve();
+					d.resolve(respuesta);
+
+				});
+
+			return d.promise;
+
+		},
+
+		habilitar: function( id ){
+
+			var d = $q.defer();
+
+			$http.delete('rest/v1/user/active/' + id )
+				.success(function( respuesta ){
+
+					self.cargarPagina( self.pag_actual  );
+					d.resolve(respuesta);
 
 				});
 

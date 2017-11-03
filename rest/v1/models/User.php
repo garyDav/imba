@@ -19,6 +19,27 @@ $app->get('/user/:id',function($id) use($app) {
 	}
 });
 
+$app->get('/user/view/:id',function($id) use($app) {
+	try {
+		$conex = getConex();
+
+		$sql = "SELECT id,ci,ex,name,last_name,email,src,fec,'' pwdA,'' pwdN,'' pwdR FROM user WHERE id='$id';";
+		$result = $conex->prepare( $sql );
+
+		$result->execute();
+		$conex = null;
+
+		$res = $result->fetchObject();
+
+		$app->response->headers->set('Content-type','application/json');
+		$app->response->headers->set('Access-Control-Allow-Origin','*');
+		$app->response->status(200);
+		$app->response->body(json_encode($res));
+	}catch(PDOException $e) {
+		echo 'Error: '.$e->getMessage();
+	}
+})->conditions(array('id'=>'[0-9]{1,11}'));
+
 $app->post("/user/",function() use($app) {
 	try {
 		$postdata = file_get_contents("php://input");
@@ -100,6 +121,68 @@ $app->delete('/user/:id',function($id) use($app) {
 	}
 })->conditions(array('id'=>'[0-9]{1,11}'));
 
+$app->delete('/user/active/:id',function($id) use($app) {
+	try {
+		$conex = getConex();
+		$result = $conex->prepare("UPDATE user 
+									 SET active = '1'
+								   WHERE id=".$id.";");
+
+		$result->execute();
+		$conex = null;
+
+		$app->response->headers->set('Content-type','application/json');
+		$app->response->status(200);
+		$app->response->body(json_encode(array('id'=>$id,'error'=>'not','msj'=>'Usuario activado correctamente.')));
+
+	} catch(PDOException $e) {
+		echo 'Error: '.$e->getMessage();
+	}
+})->conditions(array('id'=>'[0-9]{1,11}'));
+
+$app->put("/user/:id",function($id) use($app) {
+	$jsonmessage = \Slim\Slim::getInstance()->request();
+  	$objDatos = json_decode($jsonmessage->getBody());
+
+	$email = $objDatos->email;
+	$pwdA = $objDatos->pwdA;
+	$pwdN = $objDatos->pwdN;
+	$pwdR = $objDatos->pwdR;
+	$src = $objDatos->src;
+
+	if( $pwdA == null )
+		$pwdA = '';
+	if( $src == null )
+		$src = '';
+
+	if( $pwdA && $pwdN && $pwdR ) {
+		$salt = '#/$02.06$/#_#/$25.10$/#';
+		$pwdA = md5($salt.$pwdA);
+		$pwdA = sha1($salt.$pwdA);
+
+		$pwdN = md5($salt.$pwdN);
+		$pwdN = sha1($salt.$pwdN);
+
+		$pwdR = md5($salt.$pwdR);
+		$pwdR = sha1($salt.$pwdR);
+	}
+
+	try {
+		$conex = getConex();
+		$result = $conex->prepare("CALL pUpdateUser('$id','$email','$pwdA','$pwdN','$pwdR','$src');");
+
+		$result->execute();
+		$conex = null;
+		$res = $result->fetchObject();
+
+		$app->response->headers->set('Content-type','application/json');
+		$app->response->status(200);
+		$app->response->body(json_encode($res));
+
+	}catch(PDOException $e) {
+		echo "Error: ".$e->getMessage();
+	}
+})->conditions(array('id'=>'[0-9]{1,11}'));
 
 $app->post("/login/",function() use($app) {
 	$objDatos = json_decode(file_get_contents("php://input"));
@@ -120,7 +203,9 @@ $app->post("/login/",function() use($app) {
 		$result->execute();
 		$res = $result->fetchObject();
 		if($res->error == 'not'){
-			$_SESSION['userId'] = uniqid('ang_');
+			$_SESSION['uid'] = uniqid('ang_');
+			$_SESSION['userID'] = $res->id;
+			$_SESSION['userTYPE'] = $res->type;
 		}
 
 		$conex = null;

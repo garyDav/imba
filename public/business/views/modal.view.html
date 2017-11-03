@@ -28,12 +28,18 @@
           </div>
 
           <div class="form-group">
+            <label>Cuenta</label>
+            <input type="number" class="form-control" placeholder="Cuenta" min=0
+                ng-model="objSelt.account" required>
+          </div>
+
+          <div class="form-group">
             <label>Latitud</label>
             <input type="text" class="form-control" placeholder="Latitud"
                 ng-model="objSelt.latitude" required>
           </div>
 
-          <div class="form-group" ng-hide="objSelt.id">
+          <div class="form-group">
             <label>Longitud</label>
             <input type="text" class="form-control" placeholder="longitud"
                 ng-model="objSelt.length" required>

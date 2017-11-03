@@ -177,13 +177,15 @@
 }
 
 .select2 {
-    cursor:pointer;  
+  cursor:pointer;  
 }
 .select2:hover {
-    background-color:#f9f9f9;  
+  background-color:#f9f9f9;  
 }
 
-
+.tamanioInput {
+  height: 53px;
+}
 
 
 

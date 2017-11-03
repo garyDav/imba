@@ -1,47 +1,107 @@
-<div class="modal fade" id="modal_business">
+<div class="modal fade" id="modal_orders">
   <div class="modal-dialog">
     <div class="modal-content">
 
 
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-        <h4 class="modal-title">Empresas: </h4>
+        <h4 class="modal-title">Cuenta: <strong>{{account}} </strong></h4>
       </div>
 
 
-      <form name="frmBusiness"
-            ng-submit="guardar( objSelt, frmBusiness )"
+      <form name="frm"
+            ng-submit="guardar( objSelt, frm )"
             novalidate="novalidate">
 
         <div class="modal-body">
 
           <div class="form-group">
-            <label>Nombre</label>
-            <input type="text" class="form-control" placeholder="Nombre"
-                ng-model="objSelt.name" required>
+            <label>Fecha de entrega: </label>
+            <input type="date" class="form-control" placeholder="Fecha de entrega"
+                ng-model="objSelt.fec_up" required>
           </div>
+          <hr>
+
+
 
           <div class="form-group">
-            <label>Lugar</label>
-            <input type="text" class="form-control" placeholder="Lugar"
-                ng-model="objSelt.place" required>
+            <label>Agregar Productos: </label>
+            <div class="animated fadeIn">
+              <!-- /.filtros -->
+              <div class="filtros">
+              <div class="form-group busqueda linea b-largo">
+                <label for="busqueda"><i class="fa fa-search mano" aria-hidden="true"></i></label>
+                <input id="busqueda" type="text" 
+                  placeholder="Busque aqui..." 
+                  disable-valid-styling="true"
+                  ng-model="searchModel">
+              </div>
+              </div>
+              <!--<div class="form-group">
+                <input type="hidden" ng-model="objSelt.id_products">
+              </div>-->
+
+              <table class="table table-bordered responsive-table">
+                <thead>
+                  <tr>
+                    <th><a class="mano" ng-click="colPres='cod'; reverseD = !reverseD;">Código</a></th>
+                    <th><a class="mano" ng-click="colPres='name'; reverseD = !reverseD;">Producto</a></th>
+                    <th><a class="mano" ng-click="colPres='price'; reverseD = !reverseD;">Precio</a></th>
+                    <th class="tamanioInput">Cantidad</th>
+                    <th class="tamanioInput">Unidad</th>
+                    <th>Seleccione</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="obj in products | filter:searchModel | orderBy:colPres:reverseD | limitTo: 3">
+                    <td>{{ obj.cod }} </td>
+                    <td>{{ obj.name }} </td>
+                    <td>{{ obj.price }} </td>
+                    <td>
+                      <input type="number" class="form-control" placeholder="Ingrese Cantidad"
+                          ng-model="obj.cantidad" min=0 disable-valid-styling="true">
+                    </td>
+                    <td>
+                      <input type="number" class="form-control" placeholder="Ingrese Cantidad"
+                          ng-model="obj.unidad" min=0 disable-valid-styling="true">
+                    </td>
+                    <td>
+                      <a ng-click="llenar_products(obj,frm);" class="btn btn-default"><i class="fa fa-hand-o-up"></i></a>
+                    </td>
+                  </tr>
+                </tbody>
+
+              </table>
+            </div>
           </div>
 
-          <div class="form-group">
-            <label>Latitud</label>
-            <input type="text" class="form-control" placeholder="Latitud"
-                ng-model="objSelt.latitude" required>
-          </div>
+          <label>Cesta de productos</label>
+          <table class="table table-bordered responsive-table" ng-show="s_products.length > 0">
+            <thead>
+              <tr>
+                <th>Código</th>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Unidad</th>
+                <th>Quitar</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="objp in s_products">
+                <td>{{ objp.cod }} </td>
+                <td>{{ objp.name }} </td>
+                <td>{{ objp.cantidad }} </td>
+                <td>{{ objp.unidad }} </td>
+                <td><a ng-click="dropProducts( $index,objp )" class="btn btn-danger"><i class="fa fa-trash"></i></a></td>
+              </tr>
+            </tbody>
 
-          <div class="form-group" ng-hide="objSelt.id">
-            <label>Longitud</label>
-            <input type="text" class="form-control" placeholder="longitud"
-                ng-model="objSelt.length" required>
-          </div>
+          </table>
+
+
+
 
         </div>
-
-
 
         <div class="modal-footer">
           <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Guardar</button>

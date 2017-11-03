@@ -9,7 +9,8 @@
 		'graphicModule',
 		'userModule',
 		'businessModule',
-		'productsModule'
+		'productsModule',
+		'ordersModule'
 	], ["$provide", function($provide) {
 		var PLURAL_CATEGORY = {ZERO: "zero", ONE: "one", TWO: "two", FEW: "few", MANY: "many", OTHER: "other"};
 		$provide.value("$locale", {
@@ -118,6 +119,11 @@
 	        // To change the root resource file path
 	        defaultErrorMessageResolver.setI18nFileRootPath('app/lib');
 	        defaultErrorMessageResolver.setCulture('es-co');
+
+	        defaultErrorMessageResolver.getErrorMessages().then(function (errorMessages) {
+	          errorMessages['coincide'] = 'Su contraseña no coincide';
+	          errorMessages['parse'] = 'Debe ingresar la nueva contraseña';
+	        });
 	    }
 	]);
 
@@ -142,7 +148,7 @@
 			});
 	}]);
 
-	app.factory('mainService', ['$http','$location','$q', function( $http,$location,$q){
+	app.factory('mainService', ['$http','$location','$q','$rootScope', function( $http,$location,$q,$rootScope){
 		var self = {
 			logout: function() {
 				$http.post('php/destroy_session.php');
@@ -163,20 +169,134 @@
 					});
 
 				return d.promise;
+			},
+			editarUser: function(user) {
+				return $http.put('rest/v1/user/'+user.id,user);
+			},
+			data: function() {
+				var d = $q.defer();
+
+				$http.get('php/data.php' )
+					.success(function( data ){
+						//console.log(data);
+						if(data) {
+							if( data.error == 'yes' ) {
+								$http.post('php/destroy_session.php');
+								window.location="login/";
+							} else {
+								if(data.error == 'not') {
+									$rootScope.userID = data.userID;
+									$rootScope.userTYPE = data.userTYPE;
+								}
+							}
+
+						}
+						return d.resolve();
+					});
+
+				return d.promise;
+			},
+			mainUser: function(id) {
+				var d = $q.defer();
+				$http.get('rest/v1/user/view/'+id)
+					.success(function( data ) {
+						d.resolve(data);
+					});
+				return d.promise;
 			}
 		};
 		return self;
 	}]);
 
 
-	app.controller('mainCtrl', ['$scope', 'mainService', function($scope,mainService){
+	app.controller('mainCtrl', ['$scope', 'mainService','$rootScope','upload', function($scope,mainService,$rootScope,upload){
 		$scope.config = {};
 		$scope.titulo    = "";
 		$scope.subtitulo = "";
+
 		mainService.cargar().then( function(){
 			$scope.config = mainService.config;
 			//console.log($scope.config);
 		});
+
+		/******** Data User ********/
+		$scope.mainUser = {};
+		$scope.userSelMain = {};
+		$scope.editUser = {};
+
+		$scope.init = function() {
+			mainService.data().then( function(){
+				mainService.mainUser($rootScope.userID).then(function( data ) {
+					$scope.mainUser = data;
+					//console.log($scope.mainUser);
+				});
+			});
+		};
+
+		$scope.mostrarUserModal = function(){
+			$scope.init();
+			$scope.userSelMain = {};
+
+			$scope.userSelMain = $scope.mainUser;
+			$("#modal_userMain").modal();
+		};
+
+		$scope.cancelarUserMain = function(frmUser) {
+			location.reload();
+		};
+
+		$scope.editarUserMain = function(user,frmUser) {
+			if( (user.pwdN != '' || user.pwdR != '') && (user.pwdA == null || user.pwdA == '') ) {
+				swal("ERROR", "¡Antes debe ingresar su contraseña atigua!", "error");
+			}
+			else {
+			if(typeof user.src == 'object')
+				upload.saveImg(user.src).then(function( data ) {
+					if ( data.error == 'not' ) {
+						user.src = data.src;
+						$scope.mainUser.src = data.src;
+						mainService.editarUser(user).success(function(response){
+							$scope.editUser = response;
+							if( $scope.editUser.error == 'not' )
+								swal("CORRECTO", "¡"+data.msj+" - "+$scope.editUser.msj+"!", "success");
+							else
+								if ( $scope.editUser.error == 'yes' )
+								swal("ERROR", "¡"+$scope.editUser.msj+"!", "error");
+							else 
+								swal("ERROR SERVER", "¡"+$scope.editUser+"!", "error");
+						})
+						.error(function(response){
+							console.error(response);
+						});
+					} else 
+					if ( data.error == 'yes' )
+						swal("ERROR", "¡"+data.msj+"!", "error");
+					else 
+						swal("ERROR SERVER", "¡"+data+"!", "error");
+				});
+			else {
+				mainService.editarUser(user).success(function(response){
+					$scope.editUser = response;
+					if( $scope.editUser.error == 'not' )
+						swal("CORRECTO", "¡"+$scope.editUser.msj+"!", "success");
+					else
+						if ( $scope.editUser.error == 'yes' )
+						swal("ERROR", "¡"+$scope.editUser.msj+"!", "error");
+					else 
+						swal("ERROR SERVER", "¡"+$scope.editUser+"!", "error");
+				})
+				.error(function(response){
+					console.error(response);
+				});
+			}
+			$scope.userSelMain = {};
+
+			frmUser.autoValidateFormOptions.resetForm();
+			$("#modal_userMain").modal('hide');
+			}
+		};
+		/******** FIN Data User ********/
+
 
 
 		// ================================================
@@ -229,6 +349,77 @@
 			}
 		}
 	});
+
+	app.filter( 'palabra', function(){
+
+		return function(palabra){
+			if( palabra ){
+				var unaPalabra = palabra.split(" ");
+				if( unaPalabra[0] )
+					return unaPalabra[0];
+				else
+					return '';
+			}
+		}
+	});
+
+	app.filter( 'reducirTexto', function(){
+		return function(palabra){
+			if( palabra ){
+				if( palabra.length > 32)
+					return palabra.substr(0,32)+'...';
+				else
+					return palabra;
+			}
+		}
+	});
+
+	app.filter( 'textoCorto', function(){
+		return function(palabra){
+			if( palabra ){
+				if( palabra.length > 16)
+					return palabra.substr(0,16)+'...';
+				else
+					return palabra;
+			}
+		}
+	});
+
+	// ================================================
+	//   Directiva para archivos
+	// ================================================
+	app.directive('fileModel',['$parse',function($parse) {
+		return {
+			restrict: 'A',
+			link: function(scope, iElement, iAttrs) {
+				iElement.on('change',function(e) {
+					$parse(iAttrs.fileModel).assign(scope,iElement[0].files[0]);
+				});
+			}
+		};
+	}]);
+
+	// ================================================
+	//   Servicio para cargar archivos
+	// ================================================
+	app.service('upload',['$http','$q',function($http,$q) {
+		var self = {
+			saveImg : function(img) {
+				var d = $q.defer();
+				var formData = new FormData();
+				formData.append('img',img);
+				$http.post('php/server.php',formData,{
+					headers: { 'Content-Type': undefined }
+				}).success(function( data ) {
+					d.resolve( data );
+				}).error(function(msj, code) {
+					d.reject( msj );
+				});
+				return d.promise;
+			}
+		};
+		return self;
+	}]);
 
 
 })(window.angular);

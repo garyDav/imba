@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-if( !isset( $_SESSION['userId'] ) ){
+if( !isset( $_SESSION['uid'] ) ){
     header('Location: /imba/login/');
     die;
 }
@@ -39,7 +39,7 @@ if( !isset( $_SESSION['userId'] ) ){
             <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
 </head>
-<body class="hold-transition skin-green-light sidebar-mini" ng-controller="mainCtrl">
+<body class="hold-transition skin-green-light sidebar-mini" ng-controller="mainCtrl" ng-init="init();">
 
 
 	<!--<div>
@@ -80,6 +80,7 @@ if( !isset( $_SESSION['userId'] ) ){
                                 ng-include="'public/main/views/notifications.view.html'">
                         </li>
 
+                        
                         User Account Menu -->
                         <li class="dropdown user user-menu"
                                 ng-include="'public/main/views/user.view.html'">
@@ -125,7 +126,8 @@ if( !isset( $_SESSION['userId'] ) ){
                     <a href="{{ config.web }}" target="blank">Compañía</a>.
             </strong> Todos los derechos reservados.
         </footer>
-
+        
+        <div ng-include="'public/main/views/userModal.view.html'"></div>
     
     </div><!-- ./wrapper -->
 	
@@ -148,6 +150,7 @@ if( !isset( $_SESSION['userId'] ) ){
     <script src="public/user/module.js"></script>
     <script src="public/business/module.js"></script>
     <script src="public/products/module.js"></script>
+    <script src="public/orders/module.js"></script>
     <!-- Fin Module -->
     
     <!-- Route -->
@@ -155,12 +158,14 @@ if( !isset( $_SESSION['userId'] ) ){
     <script src="public/user/route.js"></script>
     <script src="public/business/route.js"></script>
     <script src="public/products/route.js"></script>
+    <script src="public/orders/route.js"></script>
     <!-- Fin Route -->
     
     <!-- Service -->
     <script src="public/user/service.js"></script>
     <script src="public/business/service.js"></script>
     <script src="public/products/service.js"></script>
+    <script src="public/orders/service.js"></script>
     <!--
     <script src="public/graphics/service.js"></script>
     -->
@@ -171,6 +176,7 @@ if( !isset( $_SESSION['userId'] ) ){
     <script src="public/user/controller.js"></script>
     <script src="public/business/controller.js"></script>
     <script src="public/products/controller.js"></script>
+    <script src="public/orders/controller.js"></script>
     <!-- Fin Controllers -->
 
 

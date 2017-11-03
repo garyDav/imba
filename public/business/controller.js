@@ -32,7 +32,7 @@ angular.module('businessModule').controller('businessCtrl', ['$scope','businessS
 		angular.copy( obj, $scope.objSelt );
 		$("#modal_business").modal();
 
-	}
+	};
 
 	// ================================================
 	//   Funcion para guardar
@@ -49,8 +49,7 @@ angular.module('businessModule').controller('businessCtrl', ['$scope','businessS
 
 		});
 
-
-	}
+	};
 	// ================================================
 	//   Funcion para eliminar
 	// ================================================
@@ -66,11 +65,30 @@ angular.module('businessModule').controller('businessCtrl', ['$scope','businessS
 			closeOnConfirm: false
 		},
 		function(){
-			businessService.eliminar( id ).then(function(){
-				swal("Eliminado!", "Registro eliminado correctamente.", "success");
+			businessService.eliminar( id ).then(function(response){
+				swal("¡Eliminado!", response.msj, "success");
 			});
 		});
 
-	}
+	};
+	// ================================================
+	//   Funcion para Habilitar
+	// ================================================
+	$scope.habilitar = function( id ){
+		swal({
+			title: "¿Esta seguro de habilitar?",
+			text: "¡Si confirma esta acción habilitará la empresa!",
+			type: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#DD6B55",
+			confirmButtonText: "Si, Habilitar!",
+			closeOnConfirm: false
+		},
+		function(){
+			businessService.habilitar( id ).then(function(response){
+				swal("¡Habilitado!", response.msj, "success");
+			});
+		});
+	};
 
 }]);

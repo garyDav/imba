@@ -48,12 +48,17 @@ angular.module('productsModule').controller('productsCtrl', ['$scope','productsS
 	// ================================================
 	$scope.mostrarModal = function( obj ){
 
-		// console.log( user );
 		angular.copy( obj, $scope.objSelt );
+		//console.log( $scope.objSelt );
 		$("#modal_products").modal();
 
 		productsService.cargarType().then( function(response){
 			$scope.p_type = response;
+			$scope.p_type.forEach(function(element,index,array) {
+				if( element.id == $scope.objSelt.id_type ) {
+					$scope.objSelt.complete = element.name;
+				}
+			});
 			console.log($scope.p_type);
 		});
 
@@ -91,8 +96,30 @@ angular.module('productsModule').controller('productsCtrl', ['$scope','productsS
 			closeOnConfirm: false
 		},
 		function(){
-			productsService.eliminar( id ).then(function(){
-				swal("Eliminado!", "Registro eliminado correctamente.", "success");
+			productsService.eliminar( id ).then(function(response){
+				swal("Eliminado!", response.msj, "success");
+			});
+		});
+
+	}
+
+	// ================================================
+	//   Funcion para Habilitar
+	// ================================================
+	$scope.habilitar = function( id ){
+
+		swal({
+			title: "¿Esta seguro de habilitar?",
+			text: "¡Si confirma esta acción habilitará el producto!",
+			type: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#DD6B55",
+			confirmButtonText: "Si, Habilitar!",
+			closeOnConfirm: false
+		},
+		function(){
+			productsService.habilitar( id ).then(function(response){
+				swal("Habilitado!", response.msj, "success");
 			});
 		});
 

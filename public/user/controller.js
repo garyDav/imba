@@ -57,10 +57,15 @@ angular.module('userModule').controller('userCtrl', ['$scope', 'userService', fu
 
 		userService.cargarEmpresas().then( function(response){
 			$scope.bussines = response;
+			$scope.bussines.forEach(function(element,index,array) {
+				if( element.id == $scope.userSel.id_business ) {
+					$scope.userSel.complete = element.name;
+				}
+			});
 			console.log($scope.bussines);
 		});
 
-	}
+	};
 
 	// ================================================
 	//   Funcion para guardar
@@ -78,7 +83,7 @@ angular.module('userModule').controller('userCtrl', ['$scope', 'userService', fu
 		});
 
 
-	}
+	};
 	// ================================================
 	//   Funcion para eliminar
 	// ================================================
@@ -86,7 +91,7 @@ angular.module('userModule').controller('userCtrl', ['$scope', 'userService', fu
 
 		swal({
 			title: "¿Esta seguro desactivar la cuenta?",
-			text: "¡Si confirma esta acción eliminará el registro!",
+			text: "¡Si confirma esta acción dará de baja el usuario!",
 			type: "warning",
 			showCancelButton: true,
 			confirmButtonColor: "#DD6B55",
@@ -94,11 +99,30 @@ angular.module('userModule').controller('userCtrl', ['$scope', 'userService', fu
 			closeOnConfirm: false
 		},
 		function(){
-			userService.eliminar( id ).then(function(){
-				swal("Eliminado!", "Usuario desactivado correctamente.", "success");
+			userService.eliminar( id ).then(function(response){
+				swal("Eliminado!", response.msj, "success");
 			});
 		});
 
-	}
+	};
+	// ================================================
+	//   Funcion para Habilitar
+	// ================================================
+	$scope.habilitar = function( id ){
+		swal({
+			title: "¿Esta seguro de habilitar?",
+			text: "¡Si confirma esta acción habilitará el usuario!",
+			type: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#DD6B55",
+			confirmButtonText: "Si, Habilitar!",
+			closeOnConfirm: false
+		},
+		function(){
+			userService.habilitar( id ).then(function(response){
+				swal("¡Habilitado!", response.msj, "success");
+			});
+		});
+	};
 
 }]);

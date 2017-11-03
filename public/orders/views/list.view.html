@@ -1,6 +1,6 @@
 <ol class="breadcrumb animated fadeIn fast">
     <li><a href="/imba"><i class="fa fa-dashboard"></i> Principal</a></li>
-    <li class="active">Empresas</li>
+    <li class="active">Pedidos</li>
 </ol>
 <!-- /.filtros -->
 <div class="filtros">
@@ -17,43 +17,43 @@
 	  <div class="box">
 	    
 	    <div class="box-header with-border">
-	      <h3 class="box-title">Empresas</h3>
+	      <h3 class="box-title">Pedidos</h3>
 	
 			<div class="box-tools hidden-xs">
 	            <div class="input-group">
 	              <a class="btn btn-primary"
-	              	ng-click="mostrarModal({})"><i class="fa fa-plus"></i> Agregar empresas</a>
+	              	ng-click="mostrarModal({})"><i class="fa fa-plus"></i> Agregar pedido</a>
 	            </div>
 	        </div>
 
 	    </div>
 	    <!-- /.box-header -->
 	    
-	    <div class="box-body" ng-hide="load || !business.business.length">
+	    <div class="box-body" ng-hide="load || !orders.orders.length">
 	      
 	      <table class="table table-bordered responsive-table-large">
 			<thead>
 				<tr>
 					<th><a class="mano" ng-click="columna='id'; reverse = !reverse;">#</a></th>
-					<th><a class="mano" ng-click="columna='name'; reverse = !reverse;">Nombre</a></th>
-					<th><a class="mano" ng-click="columna='place'; reverse = !reverse;">Lugar</a></th>
-					<th><a class="mano" ng-click="columna='active'; reverse = !reverse;">Activado</a></th>
-					<th><a class="mano" ng-click="columna='fec'; reverse = !reverse;">Registrado</a></th>
-					<th>Acción</th>
+					<th><a class="mano" ng-click="columna='last_name'; reverse = !reverse;">Nombre</a></th>
+					<th><a class="mano" ng-click="columna='sale'; reverse = !reverse;">Total pedido</a></th>
+					<th><a class="mano" ng-click="columna='fec'; reverse = !reverse;">Fecha del pedido</a></th>
+					<th><a class="mano" ng-click="columna='fec_up'; reverse = !reverse;">fecha de entrega</a></th>
+					<th>Ver</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="em in business.business | filter:busqueda | orderBy:columna:reverse">
-					<td>{{ em.id }}</td>
-					<td>{{ em.name }}</td>
-					<td>{{ em.place }}</td>
-					<td ng-show="em.active == '1'" class="success"><i class="fa fa-check mano" aria-hidden="true"></i></td>
-					<td ng-show="em.active == '0'" class="danger"><i class="fa fa-times mano" aria-hidden="true"></i></td>
-					<td>{{ em.fec | date:"fullDate" }}</td>
+				<tr ng-repeat="el in orders.orders | filter:busqueda | orderBy:columna:reverse">
+					<td>{{ el.id }}</td>
+					<td>{{ el.last_name | palabra }} {{ el.name | palabra }} </td>
+					<td>{{ el.sale }}</td>
+					<td>{{ el.fec | date:"fullDate" }}</td>
+					<td>{{ el.fec_up | date:"fullDate" }}</td>
 
 					<td>
-						<a ng-click="mostrarModal( em )" class="btn btn-warning"><i class="fa fa-edit"></i></a>
-						<a ng-click="eliminar( em.id )" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+						<a ng-click="mostrarProducts( el.id )" class="btn btn-default"><i class="fa fa-file-text"></i></a>
+						<!--<a ng-click="mostrarModal( el )" class="btn btn-warning"><i class="fa fa-edit"></i></a>
+						<a ng-click="eliminar( el.id )" class="btn btn-danger"><i class="fa fa-trash"></i></a>-->
 					</td>
 				</tr>
 			</tbody>
@@ -68,24 +68,24 @@
 				Cargando...
 			</div>
 		</div>
-		<div class="box-body" ng-show="!load && !business.business.length">
+		<div class="box-body" ng-show="!load && !orders.orders.length">
 			<div class="cargando">
 				Ingrese nuevos registros.
 			</div>
 		</div>
 
-		<div class="box-footer clearfix" ng-show="business.total_paginas > 1">
+		<div class="box-footer clearfix" ng-show="orders.total_paginas > 1">
           <ul class="pagination pagination-sm no-margin pull-right">
             <li><a class="mano" ng-click="moverA(1)">«</a></li>
 
-			<li ng-repeat="pag in business.paginas"
+			<li ng-repeat="pag in orders.paginas"
 				ng-class="{
-					'active': business.pag_actual === pag
+					'active': orders.pag_actual === pag
 				}">
 				<a class="mano" ng-click="moverA(pag)">{{ pag }}</a>
 			</li>
 
-            <li><a class="mano" ng-click="moverA( business.total_paginas )" >»</a></li>
+            <li><a class="mano" ng-click="moverA( orders.total_paginas )" >»</a></li>
           </ul>
         </div>
 
@@ -99,5 +99,6 @@
 
 
 <div class="btn-agregar visible-xs" ng-click="mostrarModal({})"><i class="fa fa-paper-plane-o i-agregar" ></i></div>
-<div ng-include="'public/business/views/modal.view.html'"></div>
+<div ng-include="'public/orders/views/modal.view.html'"></div>
+<div ng-include="'public/orders/views/modal-contains.view.html'"></div>
 

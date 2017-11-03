@@ -1,11 +1,11 @@
 (function(angular) {
 	'use strict';
 	/**
-	* businessModule Module
+	* ordersModule Module
 	*
-	* Modulo de Empresas
+	* Modulo de Pedidos
 	*/
-	angular.module('businessModule', []);
+	angular.module('ordersModule', []);
 
 
 })(window.angular);

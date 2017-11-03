@@ -1,0 +1,41 @@
+<div class="modal fade" id="modal_contains">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+        <h4 class="modal-title">Productos del pedido</h4>
+      </div>
+
+        <div class="modal-body">
+
+          <table class="table table-bordered responsive-table">
+            <thead>
+              <tr>
+                <th>Código</th>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Unidad</th>
+                <th>Monto</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="obj in fillProducts">
+                <td>{{ obj.cod }} </td>
+                <td>{{ obj.name }} </td>
+                <td>{{ obj.quantity }} </td>
+                <td>{{ obj.unity }} </td>
+                <td>{{ obj.price }} </td>
+              </tr>
+            </tbody>
+
+          </table>
+
+
+        </div>
+
+
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
