@@ -75,6 +75,13 @@ CREATE TABLE contains (
 	FOREIGN KEY (id_products) REFERENCES products(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
+CREATE TABLE img (
+	id int PRIMARY KEY AUTO_INCREMENT NOT NULL,
+	id_products int,
+	src varchar(255),
+
+	FOREIGN KEY (id_products) REFERENCES products(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 
 

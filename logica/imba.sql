@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 03-11-2017 a las 23:28:00
+-- Tiempo de generación: 04-11-2017 a las 20:28:11
 -- Versión del servidor: 10.1.26-MariaDB
 -- Versión de PHP: 7.1.9
 
@@ -236,6 +236,18 @@ INSERT INTO `contains` (`id`, `id_orders`, `id_products`, `quantity`, `unity`, `
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `img`
+--
+
+CREATE TABLE `img` (
+  `id` int(11) NOT NULL,
+  `id_products` int(11) DEFAULT NULL,
+  `src` varchar(255) COLLATE utf8_spanish2_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `orders`
 --
 
@@ -335,7 +347,7 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id`, `id_business`, `ci`, `ex`, `name`, `last_name`, `src`, `email`, `pwd`, `type`, `fec`, `fec_up`, `active`) VALUES
 (1, 1, 4654654, 'Pt', 'Alvaro', 'Antezana Ortega', 'alvaro.jpg', 'alvaro@gmail.com', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'jefev', '2017-10-20', '2017-10-20 00:00:00', 1),
-(8, 8, 10298398, 'Ch', 'Juan', 'Perez', 'avatar.png', 'juan@gmail.com', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', '2017-11-01', '2017-11-01 21:40:59', 1),
+(8, 8, 10298398, 'Ch', 'Juan', 'Perez', 'avatar3-687.png', 'juan@gmail.com', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', '2017-11-01', '2017-11-01 21:40:59', 1),
 (9, 6, 238423987, 'Or', 'Roberto Carlos', 'Mendez Contreras', 'avatar.png', 'roberto@gmail.com', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', '2017-11-01', '2017-11-01 21:42:10', 1);
 
 --
@@ -354,6 +366,13 @@ ALTER TABLE `business`
 ALTER TABLE `contains`
   ADD PRIMARY KEY (`id`),
   ADD KEY `id_order` (`id_orders`),
+  ADD KEY `id_products` (`id_products`);
+
+--
+-- Indices de la tabla `img`
+--
+ALTER TABLE `img`
+  ADD PRIMARY KEY (`id`),
   ADD KEY `id_products` (`id_products`);
 
 --
@@ -400,6 +419,12 @@ ALTER TABLE `contains`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
+-- AUTO_INCREMENT de la tabla `img`
+--
+ALTER TABLE `img`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `orders`
 --
 ALTER TABLE `orders`
@@ -433,6 +458,12 @@ ALTER TABLE `user`
 ALTER TABLE `contains`
   ADD CONSTRAINT `contains_ibfk_1` FOREIGN KEY (`id_orders`) REFERENCES `orders` (`id`),
   ADD CONSTRAINT `contains_ibfk_2` FOREIGN KEY (`id_products`) REFERENCES `products` (`id`);
+
+--
+-- Filtros para la tabla `img`
+--
+ALTER TABLE `img`
+  ADD CONSTRAINT `img_ibfk_1` FOREIGN KEY (`id_products`) REFERENCES `products` (`id`);
 
 --
 -- Filtros para la tabla `orders`

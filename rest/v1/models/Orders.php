@@ -22,7 +22,7 @@ $app->get('/products',function() use($app) {
 $app->get('/orders/products/:id',function($id) use($app) {
 	try {
 		$conex = getConex();
-		$sql = "SELECT c.id,c.quantity,c.unity,c.price,p.cod,p.name FROM contains c,products p,orders o WHERE c.id_orders=o.id AND c.id_products=p.id ORDER BY c.id;";
+		$sql = "SELECT c.id,c.quantity,c.unity,c.price,p.cod,p.name FROM contains c,products p,orders o WHERE c.id_orders=o.id AND c.id_products=p.id AND o.id=$id ORDER BY c.id;";
 		$result = $conex->prepare( $sql );
 		$result->execute();
 		$conex = null;

@@ -10,7 +10,8 @@
 		'userModule',
 		'businessModule',
 		'productsModule',
-		'ordersModule'
+		'ordersModule',
+		'galeriaModule'
 	], ["$provide", function($provide) {
 		var PLURAL_CATEGORY = {ZERO: "zero", ONE: "one", TWO: "two", FEW: "few", MANY: "many", OTHER: "other"};
 		$provide.value("$locale", {
@@ -409,6 +410,25 @@
 				var formData = new FormData();
 				formData.append('img',img);
 				$http.post('php/server.php',formData,{
+					headers: { 'Content-Type': undefined }
+				}).success(function( data ) {
+					d.resolve( data );
+				}).error(function(msj, code) {
+					d.reject( msj );
+				});
+				return d.promise;
+			}
+		};
+		return self;
+	}]);
+
+	app.service('uploadGaleria',['$http','$q',function($http,$q) {
+		var self = {
+			saveImg : function(img) {
+				var d = $q.defer();
+				var formData = new FormData();
+				formData.append('img',img);
+				$http.post('php/galeria.php',formData,{
 					headers: { 'Content-Type': undefined }
 				}).success(function( data ) {
 					d.resolve( data );

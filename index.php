@@ -151,6 +151,7 @@ if( !isset( $_SESSION['uid'] ) ){
     <script src="public/business/module.js"></script>
     <script src="public/products/module.js"></script>
     <script src="public/orders/module.js"></script>
+    <script src="public/galeria/module.js"></script>
     <!-- Fin Module -->
     
     <!-- Route -->
@@ -159,6 +160,7 @@ if( !isset( $_SESSION['uid'] ) ){
     <script src="public/business/route.js"></script>
     <script src="public/products/route.js"></script>
     <script src="public/orders/route.js"></script>
+    <script src="public/galeria/route.js"></script>
     <!-- Fin Route -->
     
     <!-- Service -->
@@ -166,6 +168,7 @@ if( !isset( $_SESSION['uid'] ) ){
     <script src="public/business/service.js"></script>
     <script src="public/products/service.js"></script>
     <script src="public/orders/service.js"></script>
+    <script src="public/galeria/service.js"></script>
     <!--
     <script src="public/graphics/service.js"></script>
     -->
@@ -177,6 +180,7 @@ if( !isset( $_SESSION['uid'] ) ){
     <script src="public/business/controller.js"></script>
     <script src="public/products/controller.js"></script>
     <script src="public/orders/controller.js"></script>
+    <script src="public/galeria/controller.js"></script>
     <!-- Fin Controllers -->
 
 
