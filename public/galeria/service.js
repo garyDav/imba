@@ -4,40 +4,17 @@
 	angular.module('galeriaModule').factory('galeriaService',['$http','$q','$rootScope',
 		function($http,$q,$rootScope) {
 			var self= {
-
-				'cargando'		: false,
-				'err'     		: false, 
-				'conteo' 		: 0,
-				'img' 			: [],
-				'pag_actual'    : 1,
-				'pag_siguiente' : 1,
-				'pag_anterior'  : 1,
-				'total_paginas' : 1,
-				'paginas'	    : [],
-				'idUltimo'		: 0,
-
-				cargarPagina: function(pag) {
+				cargar: function(pag) {
 					var d = $q.defer();
 
-					$http.get('rest/v1/img/' + pag )
+					$http.get('rest/v1/img/')
 						.success(function( data ){
-							console.log(data.img.length);
-
 							if(data) {
-
-								self.idUltimo = data.img[0].id;
-
-								self.err           = data.err;
-								self.conteo        = data.conteo;
-								self.img           = data.img;
-								self.pag_actual    = data.pag_actual;
-								self.pag_siguiente = data.pag_siguiente;
-								self.pag_anterior  = data.pag_anterior;
-								self.total_paginas = data.total_paginas;
-								self.paginas       = data.paginas;
-
+								d.resolve(data);
 							}
-							return d.resolve();
+						}).error(function(err) {
+							d.reject(err);
+							console.error(err);
 						});
 
 					return d.promise;

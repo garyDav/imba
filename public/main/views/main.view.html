@@ -1,2 +1,72 @@
-<h1>Principal</h1>
-{{mainUser.name}} {{mainUser.last_name}}
+<!-- https://bootsnipp.com/snippets/featured/carousel-extended-320-compatible -->
+<div class="container">
+        <div id="main_area">
+                <!-- Slider -->
+                <div class="row">
+                    <div class="col-xs-12" id="slider">
+                        <!-- Top part of the slider -->
+                        <div class="row">
+                            <div class="col-sm-8" id="carousel-bounding-box">
+                                <div class="carousel slide" id="myCarousel">
+                                    <!-- Carousel items -->
+                                    <div class="carousel-inner">
+                                        <div class="active item" data-slide-number="{{i.id}}" ng-repeat="i in imagenes">
+                                        <img ng-src="app/galeria/{{i.src}}"></div>
+                                    </div><!-- Carousel nav -->
+                                    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                                        <span class="glyphicon glyphicon-chevron-left"></span>                                       
+                                    </a>
+                                    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                                        <span class="glyphicon glyphicon-chevron-right"></span>                                       
+                                    </a>                                
+                                    </div>
+                            </div>
+
+                            <div class="col-sm-4" id="carousel-text"></div>
+
+                            <div id="slide-content" style="display: none;">
+                                <div id="slide-content-{{i.id}}" ng-repeat="i in imagenes">
+                                    <h2>{{i.cod}} {{i.name}} </h2>
+                                    <p>{{i.description}} </p>
+                                    <p class="sub-text">Expira en: <a href="#">{{i.expiration | date:"fullDate"}} </a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!--/Slider-->
+
+                <div class="row hidden-xs" id="slider-thumbs">
+                        <!-- Bottom switcher of slider -->
+                        <ul class="hide-bullets">
+                            <li class="col-sm-2" ng-repeat="i in imagenes">
+                                <a class="thumbnail" id="carousel-selector-{{i.id}}"><img ng-src="app/galeria/{{i.src}}"></a>
+                            </li>
+                        </ul>                 
+                </div>
+        </div>
+</div>
+
+<script>
+    jQuery(document).ready(function($) {
+ 
+        $('#myCarousel').carousel({
+                interval: 5000
+        });
+ 
+        $('#carousel-text').html($('#slide-content-1').html());
+ 
+        //Handles the carousel thumbnails
+       $('[id^=carousel-selector-]').click( function(){
+            var id = this.id.substr(this.id.lastIndexOf("-") + 1);
+            var id = parseInt(id);
+            $('#myCarousel').carousel(id);
+        });
+ 
+ 
+        // When the carousel slides, auto update the text
+        $('#myCarousel').on('slid.bs.carousel', function (e) {
+                 var id = $('.item.active').data('slide-number');
+                $('#carousel-text').html($('#slide-content-'+id).html());
+        });
+    });
+</script>

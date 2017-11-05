@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 04-11-2017 a las 20:28:11
+-- Tiempo de generación: 05-11-2017 a las 02:04:42
 -- Versión del servidor: 10.1.26-MariaDB
 -- Versión de PHP: 7.1.9
 
@@ -65,7 +65,10 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `pSession` (IN `v_email` VARCHAR(100), IN `v_pwd` VARCHAR(100))  BEGIN
 DECLARE us int(11);
+DECLARE v_active tinyint(1);
 SET us = (SELECT id FROM user WHERE email LIKE v_email);
+SET v_active = (SELECT active FROM user WHERE id=us);
+IF(v_active='1') THEN
 IF(us) THEN
 IF EXISTS(SELECT id FROM user WHERE id = us AND pwd LIKE v_pwd) THEN
 SELECT id,type,'not' AS error,'Espere por favor...' AS msj FROM user WHERE id = us;
@@ -74,6 +77,9 @@ SELECT 'yes' error,'Error: Contraseña incorrecta.' msj;
 END IF;
 ELSE
 SELECT 'yes' error,'Error: Correo no registrado.' msj;
+END IF;
+ELSE
+SELECT 'yes' error,'Error: Cuenta desactivada, contáctese con el administrador para activar su cuenta.' msj;
 END IF;
 END$$
 
@@ -139,7 +145,7 @@ END;
 START TRANSACTION;
 SET v_account = (SELECT account FROM business WHERE id=(SELECT id_business FROM user WHERE id=v_id_user));
 
-SET price_contains = (v_cantidad*v_price)+(v_unidad*v_price)/v_quantity_type;
+SET price_contains = ROUND((v_cantidad*v_price)+(v_unidad*v_price)/v_quantity_type,1);
 SET sale_tot = (SELECT sale FROM orders WHERE id=v_id_orders);
 
 IF (v_account < price_contains) THEN
@@ -203,7 +209,7 @@ INSERT INTO `business` (`id`, `name`, `place`, `account`, `latitude`, `length`, 
 (1, 'IMBA', 'lejos', 0, '323323', '23323232', '2017-10-10', 1),
 (6, 'Rosita', 'por la plaza', 10000, '123123123', '123123213', '2017-11-01', 1),
 (7, 'Lia', 'por la plaza', 10000, '45495892359', '90325809342', '2017-11-01', 1),
-(8, 'Anghy', 'lejos', 2740, '94958345003', '43504395039', '2017-11-01', 1),
+(8, 'Anghy', 'lejos', 1059.2, '94958345003', '43504395039', '2017-11-01', 1),
 (9, 'Pollos Chino', 'por la pea', 10000, '134232399898', '923894893843', '2017-11-01', 1);
 
 -- --------------------------------------------------------
@@ -231,7 +237,9 @@ INSERT INTO `contains` (`id`, `id_orders`, `id_products`, `quantity`, `unity`, `
 (26, 21, 7, 5, 0, 750),
 (27, 22, 5, 4, 0, 1320),
 (28, 22, 7, 2, 0, 300),
-(29, 22, 4, 2, 0, 580);
+(29, 22, 4, 2, 0, 580),
+(30, 23, 7, 4, 0, 600),
+(31, 23, 5, 3, 11, 1080.8);
 
 -- --------------------------------------------------------
 
@@ -244,6 +252,15 @@ CREATE TABLE `img` (
   `id_products` int(11) DEFAULT NULL,
   `src` varchar(255) COLLATE utf8_spanish2_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `img`
+--
+
+INSERT INTO `img` (`id`, `id_products`, `src`) VALUES
+(1, 4, 'img1.jpg'),
+(2, 5, 'img2.jpg'),
+(3, 6, 'img3.jpg');
 
 -- --------------------------------------------------------
 
@@ -265,7 +282,8 @@ CREATE TABLE `orders` (
 
 INSERT INTO `orders` (`id`, `id_user`, `sale`, `fec`, `fec_up`) VALUES
 (21, 8, 5060, '2017-11-01', '2017-11-03'),
-(22, 8, 2200, '2017-11-01', '2017-11-02');
+(22, 8, 2200, '2017-11-01', '2017-11-02'),
+(23, 8, 1680.8, '2017-11-04', '2017-11-11');
 
 -- --------------------------------------------------------
 
@@ -293,9 +311,9 @@ CREATE TABLE `products` (
 
 INSERT INTO `products` (`id`, `id_type`, `cod`, `name`, `description`, `price`, `quantity`, `unity`, `fec`, `expiration`, `active`) VALUES
 (4, 4, 'C-001', 'Trozo de pollo Pechuga', 'Trozo de pollo Pechuga', 290, 48, 10, '2017-11-01', '2017-12-03', 1),
-(5, 2, 'C-002', 'Piernas', 'Cuarto de Piernas', 330, 44, 20, '2017-11-01', '2017-12-03', 1),
+(5, 2, 'C-002', 'Piernas', 'Cuarto de Piernas', 330, 41, 9, '2017-11-01', '2017-12-03', 1),
 (6, 1, 'C-003', 'Muslos', 'Pollo en bandeja muslos', 35, 60, 3, '2017-11-01', '2017-12-03', 1),
-(7, 3, 'C-004', 'Filete de Pecho', 'Pollo deshuesado Filete de Pecho', 150, 1, 5, '2017-11-01', '2017-12-03', 1);
+(7, 3, 'C-004', 'Filete de Pecho', 'Pollo deshuesado Filete de Pecho', 150, 20, 5, '2017-11-01', '2017-12-03', 1);
 
 -- --------------------------------------------------------
 
@@ -347,7 +365,7 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id`, `id_business`, `ci`, `ex`, `name`, `last_name`, `src`, `email`, `pwd`, `type`, `fec`, `fec_up`, `active`) VALUES
 (1, 1, 4654654, 'Pt', 'Alvaro', 'Antezana Ortega', 'alvaro.jpg', 'alvaro@gmail.com', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'jefev', '2017-10-20', '2017-10-20 00:00:00', 1),
-(8, 8, 10298398, 'Ch', 'Juan', 'Perez', 'avatar3-687.png', 'juan@gmail.com', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', '2017-11-01', '2017-11-01 21:40:59', 1),
+(8, 8, 10298398, 'Ch', 'Juan', 'Perez', 'avatar-685.png', 'juan@gmail.com', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', '2017-11-01', '2017-11-01 21:40:59', 1),
 (9, 6, 238423987, 'Or', 'Roberto Carlos', 'Mendez Contreras', 'avatar.png', 'roberto@gmail.com', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', '2017-11-01', '2017-11-01 21:42:10', 1);
 
 --
@@ -416,19 +434,19 @@ ALTER TABLE `business`
 -- AUTO_INCREMENT de la tabla `contains`
 --
 ALTER TABLE `contains`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT de la tabla `img`
 --
 ALTER TABLE `img`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT de la tabla `products`

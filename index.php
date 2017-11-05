@@ -180,7 +180,6 @@ if( !isset( $_SESSION['uid'] ) ){
     <script src="public/business/controller.js"></script>
     <script src="public/products/controller.js"></script>
     <script src="public/orders/controller.js"></script>
-    <script src="public/galeria/controller.js"></script>
     <!-- Fin Controllers -->
 
 

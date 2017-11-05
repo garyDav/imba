@@ -101,15 +101,21 @@ CREATE PROCEDURE pSession(
 )
 BEGIN
 	DECLARE us int(11);
+	DECLARE v_active tinyint(1);
 	SET us = (SELECT id FROM user WHERE email LIKE v_email);
-	IF(us) THEN
-		IF EXISTS(SELECT id FROM user WHERE id = us AND pwd LIKE v_pwd) THEN
-			SELECT id,type,'not' AS error,'Espere por favor...' AS msj FROM user WHERE id = us;
+	SET v_active = (SELECT active FROM user WHERE id=us);
+	IF(v_active='1') THEN
+		IF(us) THEN
+			IF EXISTS(SELECT id FROM user WHERE id = us AND pwd LIKE v_pwd) THEN
+				SELECT id,type,'not' AS error,'Espere por favor...' AS msj FROM user WHERE id = us;
+			ELSE
+				SELECT 'yes' error,'Error: Contraseña incorrecta.' msj;
+			END IF;
 		ELSE
-			SELECT 'yes' error,'Error: Contraseña incorrecta.' msj;
+			SELECT 'yes' error,'Error: Correo no registrado.' msj;
 		END IF;
 	ELSE
-		SELECT 'yes' error,'Error: Correo no registrado.' msj;
+		SELECT 'yes' error,'Error: Cuenta desactivada, contáctese con el administrador para activar su cuenta.' msj;
 	END IF;
 END //
 
@@ -307,7 +313,7 @@ BEGIN
 	START TRANSACTION;
 	SET v_account = (SELECT account FROM business WHERE id=(SELECT id_business FROM user WHERE id=v_id_user));
 
-	SET price_contains = (v_cantidad*v_price)+(v_unidad*v_price)/v_quantity_type;
+	SET price_contains = ROUND((v_cantidad*v_price)+(v_unidad*v_price)/v_quantity_type,1);
 	SET sale_tot = (SELECT sale FROM orders WHERE id=v_id_orders);
 
 	IF (v_account < price_contains) THEN

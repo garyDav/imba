@@ -332,8 +332,75 @@
 	// ================================================
 	//   Controlador de principal
 	// ================================================
-	app.controller('principalCtrl', ['$scope', function($scope){
-		$scope.activar('mPrincipal','','Principal','información');
+	app.controller('principalCtrl', ['$scope','galeriaService','uploadGaleria', function($scope,galeriaService,uploadGaleria){
+		$scope.activar('mGaleria','','Galería','lista de galería');
+
+		$scope.load 	= true;
+		$scope.imagenes	= [];
+
+		galeriaService.cargar().then( function(response){
+			$scope.imagenes = response;
+			console.log($scope.imagenes);
+			$scope.load = false;
+		});
+
+		$scope.myInterval = 3000;
+		  $scope.slides = [
+		    {
+		      image: 'http://lorempixel.com/400/200/'
+		    },
+		    {
+		      image: 'http://lorempixel.com/400/200/food'
+		    },
+		    {
+		      image: 'http://lorempixel.com/400/200/sports'
+		    },
+		    {
+		      image: 'http://lorempixel.com/400/200/people'
+		    }
+		  ];
+
+		$scope.findOne = function() {
+			$scope.guardarGaleria = function(self,form) {
+				//console.log(self);
+
+				if( self.img ) {
+
+					if( typeof self.img == 'object' )
+						uploadGaleria.saveImg(self.img).then(function( data ) {
+							if ( data.error == 'not' ) {
+								self.img = data.src;
+								galeriaService.guardar( self ).then(function(){
+									// codigo cuando se inserto o actualizo
+									$("#modal_galeria").modal('hide');
+									self = {};
+
+									form.autoValidateFormOptions.resetForm();
+								});
+							} else 
+							if ( data.error == 'yes' )
+								swal("ERROR", "¡"+data.msj+"!", "error");
+							else {
+								swal("ERROR SERVER", "¡"+data+"!", "error");
+								console.error(data);
+							}
+						});
+					else {
+						galeriaService.guardar( self ).then(function(){
+							// codigo cuando se inserto o actualizo
+							$("#modal_galeria").modal('hide');
+							self = {};
+
+							form.autoValidateFormOptions.resetForm();
+						});
+					}
+
+				} else {
+					swal("ERROR", "¡Inserte una imagen!", "error");
+				}
+			};
+		};
+
 	}]);
 
 	// ================================================

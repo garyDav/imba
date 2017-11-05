@@ -3,7 +3,7 @@
 $app->get('/img/',function() use($app) {
 	try {
 		$conex = getConex();
-		$sql = "SELECT i.id,i.src,p.cod,p.name,p.description FROM img i,products p WHERE i.id_products=p.id";
+		$sql = "SELECT i.id,i.src,p.cod,p.name,p.description,p.expiration FROM img i,products p WHERE i.id_products=p.id";
 		$result = $conex->prepare( $sql );
 		$result->execute();
 		$conex = null;

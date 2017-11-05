@@ -79,7 +79,7 @@ angular.module('ordersModule').controller('ordersCtrl', ['$scope','ordersService
 				$scope.monto = (obj.cantidad*obj.price)+(obj.unidad*obj.price)/obj.quantity_type;
 				if($scope.account >= $scope.monto) {
 					$scope.s_products.push(obj);
-					$scope.account -= $scope.monto;
+					$scope.account -= $scope.monto.toFixed(1);
 				} else {
 					$("#modal_orders").modal('hide');
 					$scope.objSelt = {};
@@ -91,8 +91,8 @@ angular.module('ordersModule').controller('ordersCtrl', ['$scope','ordersService
 		}
 	};
 	$scope.dropProducts = function(index,obj) {
-		$scope.monto = (obj.cantidad*obj.price)+(obj.unidad*obj.price)/obj.quantity_type;
-		$scope.account += $scope.monto;
+		$scope.monto = ((obj.cantidad*obj.price)+(obj.unidad*obj.price)/obj.quantity_type).toFixed(1);
+		$scope.account += $scope.monto.toFixed(1);
 		$scope.s_products.splice(index,1);
 	};
 
