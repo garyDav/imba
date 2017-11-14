@@ -241,6 +241,9 @@
 			$scope.userSelMain = $scope.mainUser;
 			$("#modal_userMain").modal();
 		};
+		$scope.mostrarGaleria = function(obj) {
+			$("#modal_galeria").modal();
+		};
 
 		$scope.cancelarUserMain = function(frmUser) {
 			location.reload();
@@ -318,6 +321,8 @@
 			$scope.mProducts = "";
 			$scope.mOrders = "";
 			$scope.mGraphic = "";
+			$scope.mGaleria = "";
+			$scope.mReporte = "";
 
 			$scope[menu] = 'active';
 
@@ -337,6 +342,7 @@
 
 		$scope.load 	= true;
 		$scope.imagenes	= [];
+		
 
 		galeriaService.cargar().then( function(response){
 			$scope.imagenes = response;
@@ -360,7 +366,34 @@
 		    }
 		  ];
 
+
 		$scope.findOne = function() {
+			$scope.g_products = {};
+			$scope.galeriaSel = {};
+			$scope.activar('mGaleria');
+			galeriaService.cargarProducts().then( function(response){
+				$scope.g_products = response;
+			});
+			
+			$scope.completeProducts = function(string){
+		        if(string) {
+		            $scope.hidethis = false;
+		            var output = [];
+		            angular.forEach($scope.g_products, function(element){
+		                if(element.name.toLowerCase().indexOf(string.toLowerCase()) >= 0)  {
+		                    output.push(element);
+		                }
+		            });
+		            $scope.filterObj = output;
+		        } else
+		            $scope.filterObj = [];
+		    };
+		    $scope.fillTextbox = function(elem){
+		        $scope.galeriaSel.id = elem.id;
+		        $scope.galeriaSel.complete = elem.name;
+		        $scope.hidethis = true;
+		    };
+
 			$scope.guardarGaleria = function(self,form) {
 				//console.log(self);
 
@@ -386,13 +419,7 @@
 							}
 						});
 					else {
-						galeriaService.guardar( self ).then(function(){
-							// codigo cuando se inserto o actualizo
-							$("#modal_galeria").modal('hide');
-							self = {};
-
-							form.autoValidateFormOptions.resetForm();
-						});
+						swal("ERROR", "¡Inserte una imagen!", "error");
 					}
 
 				} else {

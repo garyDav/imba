@@ -1,4 +1,4 @@
-<div class="modal fade" id="modal_galeria" ng-controller="galeriaCtrl" ng-init="findOne();">
+<div class="modal fade" id="modal_galeria" ng-controller="principalCtrl" ng-init="findOne();">
   <div class="modal-dialog">
     <div class="modal-content">
 
@@ -10,20 +10,25 @@
 
 
       <form name="frmGaleria"
-            ng-submit="guardarGaleria( pubSel, frmGaleria )"
+            ng-submit="guardarGaleria( galeriaSel, frmGaleria )"
             novalidate="novalidate">
 
         <div class="modal-body">
 
           <div class="form-group">
-            <label>Descripción</label>
-            <textarea class="form-control" rows="2" placeholder="Ingrese una descripción"
-                ng-model="pubSel.description" required></textarea>
+            <label>Producto: #{{galeriaSel.id}} </label>
+            <div class="form-group">
+              <input type="hidden" ng-model="galeriaSel.id">
+            </div>
+            <input type="text" name="element" id="element" ng-model="galeriaSel.complete" ng-keyup="completeProducts(galeriaSel.complete)" class="form-control" placeholder="Ingrese el producto" autocomplete="off" required />
+            <ul class="list-group margin-top-0" ng-model="hidethis" ng-hide="hidethis">
+                <li class="list-group-item select2" ng-repeat="elem in filterObj" ng-click="fillTextbox(elem)">#{{elem.id}}: {{elem.name}}</li>
+            </ul>
           </div>
 
           <div class="form-group">
             <label>Ingrese la imagen: </label><span>(tamaño máximo) 4.8Mb.</span>
-            <input type="file" file-model="pubSel.img">
+            <input type="file" file-model="galeriaSel.img">
           </div>
 
         </div>

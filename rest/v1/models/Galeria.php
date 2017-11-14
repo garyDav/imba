@@ -29,8 +29,7 @@ $app->post("/img/",function() use($app) {
 		$res = array( 'err'=>'yes','msj'=>'No se pudo hacer nada' );
 
 		$sql = "CALL pInsertImg(
-					'". '' . "',
-					'". $request['description'] . "',
+					'". $request['id'] . "',
 					'". $request['img'] . "' );";
 
 		$hecho = $conex->prepare( $sql );

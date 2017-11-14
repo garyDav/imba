@@ -35,19 +35,8 @@
     <li ng-class="mUsers" ng-show="userTYPE=='jefev'"><a ng-href="users"><i class="fa fa-users"></i> <span>Usuarios</span></a></li>
     <li ng-class="mProducts" ng-show="userTYPE=='jefev'"><a ng-href="products"><i class="fa fa-product-hunt"></i> <span>Productos</span></a></li>
     <li ng-class="mOrders" ng-show="userTYPE!='jefev'"><a ng-href="orders"><i class="fa fa-money"></i> <span>Pedidos</span></a></li>
-    <!--<li ng-class="mReport"><a ng-href="reports"><i class="fa fa-file-text"></i> <span>Reportes</span></a></li>
-    <li ng-class="mGraphic"><a ng-href="graphic"><i class="fa fa-pie-chart"></i> <span>Graficos</span></a></li>-->
-    <!--<li class="treeview">
-      <a href="#"><i class="fa fa-link"></i> <span>Multilevel</span>
-        <span class="pull-right-container">
-          <i class="fa fa-angle-left pull-right"></i>
-        </span>
-      </a>
-      <ul class="treeview-menu">
-        <li><a href="#">Link in level 2</a></li>
-        <li><a href="#">Link in level 2</a></li>
-      </ul>
-    </li>-->
+    <li ng-class="mGaleria" class="mano" ng-show="userTYPE=='jefev'"><a ng-click="mostrarGaleria({})"><i class="fa fa-picture-o"></i> <span>Galería</span></a></li>
+    <li ng-class="mReporte" ng-show="userTYPE=='jefev'"><a ng-href="report"><i class="fa fa-file-text-o"></i> <span>Reporte</span></a></li>
   </ul>
   <!-- /.sidebar-menu -->
 </section>

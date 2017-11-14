@@ -152,7 +152,6 @@ angular.module('ordersModule').controller('ordersCtrl', ['$scope','ordersService
 	};
 
 	$scope.mostrarProducts = function(id) {
-		console.log("puta que lo parió: "+id);
 		$("#modal_contains").modal();
 
 		ordersService.cargarProductsSelect( id ).then(function(response){

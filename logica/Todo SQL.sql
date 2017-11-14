@@ -200,6 +200,16 @@ BEGIN
 	SELECT @@identity AS id,'not' AS error, 'Producto agregado a la cesta.' AS msj;
 END //
 
+DROP PROCEDURE IF EXISTS pInsertImg;
+CREATE PROCEDURE pInsertImg (
+	IN v_id_products int,
+	IN v_src varchar(255)
+)
+BEGIN
+	INSERT INTO img VALUES(null,v_id_products,v_src);
+	SELECT @@identity AS id,'not' AS error, 'Imagen agregado correctamente.' AS msj;
+END //
+
 DROP PROCEDURE IF EXISTS pUpdateUser;
 CREATE PROCEDURE pUpdateUser (
 	IN v_id int,

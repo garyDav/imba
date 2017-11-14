@@ -128,6 +128,7 @@ if( !isset( $_SESSION['uid'] ) ){
         </footer>
         
         <div ng-include="'public/main/views/userModal.view.html'"></div>
+        <div ng-include="'public/galeria/views/modal.view.html'"></div>
     
     </div><!-- ./wrapper -->
 	

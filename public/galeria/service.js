@@ -27,7 +27,6 @@
 					.success(function( response ){
 
 						if ( response.error == 'not' ) {
-							self.cargarPagina( self.pag_actual );
 							d.resolve();
 							swal("CORRECTO", "¡"+response.msj+"!", "success");
 						} else 
@@ -42,6 +41,21 @@
 						d.reject(err);
 						console.error(err);
 					});
+
+					return d.promise;
+				},
+				cargarProducts: function() {
+					var d = $q.defer();
+
+					$http.get('rest/v1/galeria/products/')
+						.success(function( data ){
+							if(data) {
+								d.resolve(data);
+							}
+						}).error(function(err) {
+							d.reject(err);
+							console.error(err);
+						});
 
 					return d.promise;
 				}

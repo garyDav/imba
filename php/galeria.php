@@ -16,7 +16,7 @@ if($_FILES['img']) {
 		$size = $_FILES['img']['size'];
 		$error = $_FILES['img']['error'];
 		$extension = substr($tipo,strpos($tipo,'/')+1);
-		$name = time().'.'.$extension;
+		$name = substr($nombre,0,-4).'-'.substr(time(),-3).'.'.$extension;
 		$lugar = '../app/galeria/';
 		//Fin de definir nombres
 

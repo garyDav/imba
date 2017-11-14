@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 05-11-2017 a las 02:04:42
+-- Tiempo de generación: 14-11-2017 a las 14:39:37
 -- Versión del servidor: 10.1.26-MariaDB
 -- Versión de PHP: 7.1.9
 
@@ -38,6 +38,11 @@ END$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `pInsertContains` (IN `id_orders` INT, IN `id_products` INT, IN `canidad` INT, IN `unidad` INT, IN `price` FLOAT)  BEGIN
 INSERT INTO contains VALUES(null,id_orders,id_products,canidad,unidad,price);
 SELECT @@identity AS id,'not' AS error, 'Producto agregado a la cesta.' AS msj;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `pInsertImg` (IN `v_id_products` INT, IN `v_src` VARCHAR(255))  BEGIN
+INSERT INTO img VALUES(null,v_id_products,v_src);
+SELECT @@identity AS id,'not' AS error, 'Imagen agregado correctamente.' AS msj;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `pInsertOrders` (IN `v_id_user` INT, IN `v_fec_up` DATE)  BEGIN
@@ -210,7 +215,8 @@ INSERT INTO `business` (`id`, `name`, `place`, `account`, `latitude`, `length`, 
 (6, 'Rosita', 'por la plaza', 10000, '123123123', '123123213', '2017-11-01', 1),
 (7, 'Lia', 'por la plaza', 10000, '45495892359', '90325809342', '2017-11-01', 1),
 (8, 'Anghy', 'lejos', 1059.2, '94958345003', '43504395039', '2017-11-01', 1),
-(9, 'Pollos Chino', 'por la pea', 10000, '134232399898', '923894893843', '2017-11-01', 1);
+(9, 'Pollos Chino', 'por la pea', 10000, '134232399898', '923894893843', '2017-11-01', 1),
+(10, 'Sacura', 'lejos', 25000, 'tal', 'long', '2017-11-12', 1);
 
 -- --------------------------------------------------------
 
@@ -260,7 +266,8 @@ CREATE TABLE `img` (
 INSERT INTO `img` (`id`, `id_products`, `src`) VALUES
 (1, 4, 'img1.jpg'),
 (2, 5, 'img2.jpg'),
-(3, 6, 'img3.jpg');
+(3, 6, 'img3.jpg'),
+(5, 4, 'captura de pantalla 2017-10-11 a la(s) 11.28.39-794.png');
 
 -- --------------------------------------------------------
 
@@ -366,7 +373,7 @@ CREATE TABLE `user` (
 INSERT INTO `user` (`id`, `id_business`, `ci`, `ex`, `name`, `last_name`, `src`, `email`, `pwd`, `type`, `fec`, `fec_up`, `active`) VALUES
 (1, 1, 4654654, 'Pt', 'Alvaro', 'Antezana Ortega', 'alvaro.jpg', 'alvaro@gmail.com', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'jefev', '2017-10-20', '2017-10-20 00:00:00', 1),
 (8, 8, 10298398, 'Ch', 'Juan', 'Perez', 'avatar-685.png', 'juan@gmail.com', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', '2017-11-01', '2017-11-01 21:40:59', 1),
-(9, 6, 238423987, 'Or', 'Roberto Carlos', 'Mendez Contreras', 'avatar.png', 'roberto@gmail.com', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', '2017-11-01', '2017-11-01 21:42:10', 1);
+(9, 6, 238423987, 'Or', 'Roberto Carlos', 'Mendez Contreras', 'avatar.png', 'roberto@gmail.com', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', '2017-11-01', '2017-11-01 21:42:10', 0);
 
 --
 -- Índices para tablas volcadas
@@ -428,7 +435,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT de la tabla `business`
 --
 ALTER TABLE `business`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `contains`
@@ -440,7 +447,7 @@ ALTER TABLE `contains`
 -- AUTO_INCREMENT de la tabla `img`
 --
 ALTER TABLE `img`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `orders`
