@@ -2,12 +2,12 @@
 
 	'use strict';	
 	
-	angular.module('graphicModule')
+	angular.module('reportModule')
 	.config(['$routeProvider',function($routeProvider) {
 		$routeProvider.
-			when('/graphic',{
-				templateUrl: 'public/graphics/views/graphic.view.html',
-				controller: 'graphicCtrl'
+			when('/report',{
+				templateUrl: 'public/report/views/list.view.html',
+				controller: 'reportCtrl'
 			});
 	}]);
 

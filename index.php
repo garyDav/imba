@@ -29,6 +29,7 @@ if( !isset( $_SESSION['uid'] ) ){
 	<link rel="stylesheet" href="app/css/AdminLTE.css">
 	<link rel="stylesheet" href="app/css/skin-green-light.min.css">
     <link rel="stylesheet" href="app/css/sweetalert.css">
+    <link rel="stylesheet" href="app/css/daterangepicker.css">
 	<!-- Fin Librerias CSS-->
     <link rel="stylesheet" href="app/css/animate.css">
 	<link href="app/css/styles.css" rel="stylesheet">
@@ -143,11 +144,15 @@ if( !isset( $_SESSION['uid'] ) ){
 	<script src="app/lib/bootstrap.min.js"></script>
 	<script src="app/lib/AdminLTEapp.js"></script>
     <script src="app/lib/sweetalert.min.js"></script>
+    <script src="app/lib/jspdf.debug.js"></script>
+    <script src="app/lib/html2pdf.js"></script>
+    <script src="app/lib/moment.js"></script>
+    <script src="app/lib/daterangepicker.js"></script>
 	<!--<script src="js/ie10-viewport-bug-workaround.js"></script>-->
 	<!-- Fin todas las librerias externas -->
 
 	<!-- Module -->
-    <script src="public/graphics/module.js"></script>
+    <script src="public/report/module.js"></script>
     <script src="public/user/module.js"></script>
     <script src="public/business/module.js"></script>
     <script src="public/products/module.js"></script>
@@ -156,7 +161,7 @@ if( !isset( $_SESSION['uid'] ) ){
     <!-- Fin Module -->
     
     <!-- Route -->
-    <script src="public/graphics/route.js"></script>
+    <script src="public/report/route.js"></script>
     <script src="public/user/route.js"></script>
     <script src="public/business/route.js"></script>
     <script src="public/products/route.js"></script>
@@ -165,18 +170,16 @@ if( !isset( $_SESSION['uid'] ) ){
     <!-- Fin Route -->
     
     <!-- Service -->
+    <script src="public/report/service.js"></script>
     <script src="public/user/service.js"></script>
     <script src="public/business/service.js"></script>
     <script src="public/products/service.js"></script>
     <script src="public/orders/service.js"></script>
     <script src="public/galeria/service.js"></script>
-    <!--
-    <script src="public/graphics/service.js"></script>
-    -->
     <!-- Fin Service -->
 
     <!-- Controllers -->
-    <script src="public/graphics/controller.js"></script>
+    <script src="public/report/controller.js"></script>
     <script src="public/user/controller.js"></script>
     <script src="public/business/controller.js"></script>
     <script src="public/products/controller.js"></script>

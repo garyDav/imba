@@ -7,7 +7,7 @@
 	*
 	* Modulo de Graficos
 	*/
-	angular.module('graphicModule', []);
+	angular.module('reportModule', []);
 
 
 

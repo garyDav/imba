@@ -1,0 +1,45 @@
+<ol class="breadcrumb animated fadeIn fast">
+    <li><a href="/prestamos"><i class="fa fa-dashboard"></i> Principal</a></li>
+    <li class="active">Graficos</li>
+</ol>
+<div class="row">
+	<div class="col-md-12">
+	  <div class="box box-success">
+        <div class="box-header with-border">
+          <h3 class="box-title">Reporte</h3>
+
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
+            </button>
+          </div>
+          <!-- /.box-tools -->
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+
+		  <form name="frmReport"
+            ng-submit="mostrarModal( objSelt, frmReport )"
+	            novalidate="novalidate">
+
+	          <div class="form-group">
+	            <label>Elige un rango</label>
+	            <input type="text" name="datefilter" class="form-control" placeholder="Rango de fechas"
+                ng-model="objSelt.fec_rango">
+	          </div>
+
+	        <!--<div class="modal-footer">
+	          <button type="submit" class="btn btn-success"><i class="fa fa-calculator"></i> Calcular</button>
+	        </div>-->
+
+	      </form>
+
+        </div>
+        <!-- /.box-body -->
+      </div>
+	</div>
+</div>
+
+<div ng-include="'public/report/views/modal.view.html'"></div>
+

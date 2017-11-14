@@ -6,7 +6,7 @@
 		'ngRoute',
 		'angular-loading-bar',
 		'jcs-autoValidate',
-		'graphicModule',
+		'reportModule',
 		'userModule',
 		'businessModule',
 		'productsModule',

@@ -20,7 +20,7 @@ require 'models/Business.php';
 require 'models/Products.php';
 require 'models/Orders.php';
 require 'models/Galeria.php';
-//require 'models/Reporte.php';
+require 'models/Reporte.php';
 //end EntidadesRESTFULL
 
 $app->run();

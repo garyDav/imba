@@ -284,6 +284,15 @@ BEGIN
 	END IF;
 END //
 
+DROP PROCEDURE IF EXISTS pReporte;
+CREATE PROCEDURE pReporte (
+    IN v_startDate date,
+    IN v_endDate date
+)
+BEGIN
+	SELECT o.id,o.sale,o.fec,o.fec_up,c.quantity,c.unity,c.price,p.cod,p.name,p.price FROM orders o,contains c,products p WHERE c.id_orders=o.id AND c.id_products=p.id AND o.fec_up >= v_startDate AND o.fec_up <= v_endDate GROUP BY o.id;
+END //
+
 
 
 
