@@ -1,15 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.4
--- https://www.phpmyadmin.net/
+-- version 4.5.2
+-- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 14-11-2017 a las 14:39:37
--- Versión del servidor: 10.1.26-MariaDB
--- Versión de PHP: 7.1.9
+-- Tiempo de generación: 15-11-2017 a las 03:58:15
+-- Versión del servidor: 10.1.13-MariaDB
+-- Versión de PHP: 7.0.8
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -214,7 +212,7 @@ INSERT INTO `business` (`id`, `name`, `place`, `account`, `latitude`, `length`, 
 (1, 'IMBA', 'lejos', 0, '323323', '23323232', '2017-10-10', 1),
 (6, 'Rosita', 'por la plaza', 10000, '123123123', '123123213', '2017-11-01', 1),
 (7, 'Lia', 'por la plaza', 10000, '45495892359', '90325809342', '2017-11-01', 1),
-(8, 'Anghy', 'lejos', 1059.2, '94958345003', '43504395039', '2017-11-01', 1),
+(8, 'Anghy', 'lejos', 202, '94958345003', '43504395039', '2017-11-01', 1),
 (9, 'Pollos Chino', 'por la pea', 10000, '134232399898', '923894893843', '2017-11-01', 1),
 (10, 'Sacura', 'lejos', 25000, 'tal', 'long', '2017-11-12', 1);
 
@@ -245,7 +243,11 @@ INSERT INTO `contains` (`id`, `id_orders`, `id_products`, `quantity`, `unity`, `
 (28, 22, 7, 2, 0, 300),
 (29, 22, 4, 2, 0, 580),
 (30, 23, 7, 4, 0, 600),
-(31, 23, 5, 3, 11, 1080.8);
+(31, 23, 5, 3, 11, 1080.8),
+(32, 24, 7, 2, 4, 360),
+(33, 24, 5, 1, 5, 371.2),
+(35, 24, 6, 1, 4, 63),
+(36, 25, 6, 1, 4, 63);
 
 -- --------------------------------------------------------
 
@@ -290,7 +292,9 @@ CREATE TABLE `orders` (
 INSERT INTO `orders` (`id`, `id_user`, `sale`, `fec`, `fec_up`) VALUES
 (21, 8, 5060, '2017-11-01', '2017-11-03'),
 (22, 8, 2200, '2017-11-01', '2017-11-02'),
-(23, 8, 1680.8, '2017-11-04', '2017-11-11');
+(23, 8, 1680.8, '2017-11-04', '2017-11-11'),
+(24, 8, 794.2, '2017-11-15', '2017-11-17'),
+(25, 8, 63, '2017-11-15', '2017-11-17');
 
 -- --------------------------------------------------------
 
@@ -318,9 +322,9 @@ CREATE TABLE `products` (
 
 INSERT INTO `products` (`id`, `id_type`, `cod`, `name`, `description`, `price`, `quantity`, `unity`, `fec`, `expiration`, `active`) VALUES
 (4, 4, 'C-001', 'Trozo de pollo Pechuga', 'Trozo de pollo Pechuga', 290, 48, 10, '2017-11-01', '2017-12-03', 1),
-(5, 2, 'C-002', 'Piernas', 'Cuarto de Piernas', 330, 41, 9, '2017-11-01', '2017-12-03', 1),
-(6, 1, 'C-003', 'Muslos', 'Pollo en bandeja muslos', 35, 60, 3, '2017-11-01', '2017-12-03', 1),
-(7, 3, 'C-004', 'Filete de Pecho', 'Pollo deshuesado Filete de Pecho', 150, 20, 5, '2017-11-01', '2017-12-03', 1);
+(5, 2, 'C-002', 'Piernas', 'Cuarto de Piernas', 330, 40, 4, '2017-11-01', '2017-12-03', 1),
+(6, 1, 'C-003', 'Muslos', 'Pollo en bandeja muslos', 35, 58, 4, '2017-11-01', '2017-12-03', 1),
+(7, 3, 'C-004', 'Filete de Pecho', 'Pollo deshuesado Filete de Pecho', 150, 18, 1, '2017-11-01', '2017-12-03', 1);
 
 -- --------------------------------------------------------
 
@@ -436,43 +440,36 @@ ALTER TABLE `user`
 --
 ALTER TABLE `business`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
-
 --
 -- AUTO_INCREMENT de la tabla `contains`
 --
 ALTER TABLE `contains`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
-
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 --
 -- AUTO_INCREMENT de la tabla `img`
 --
 ALTER TABLE `img`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
 --
 -- AUTO_INCREMENT de la tabla `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
-
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 --
 -- AUTO_INCREMENT de la tabla `products`
 --
 ALTER TABLE `products`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-
 --
 -- AUTO_INCREMENT de la tabla `type`
 --
 ALTER TABLE `type`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
 --
 -- AUTO_INCREMENT de la tabla `user`
 --
 ALTER TABLE `user`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
-
 --
 -- Restricciones para tablas volcadas
 --
@@ -507,7 +504,6 @@ ALTER TABLE `products`
 --
 ALTER TABLE `user`
   ADD CONSTRAINT `user_ibfk_1` FOREIGN KEY (`id_business`) REFERENCES `business` (`id`);
-COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

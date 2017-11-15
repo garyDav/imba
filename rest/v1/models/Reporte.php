@@ -9,8 +9,6 @@ $app->post("/report/",function() use($app) {
 	try {
 		$conex = getConex();
 
-
-
 		$sql = "SELECT id,sale,fec,fec_up,'' AS products FROM orders WHERE fec_up >= '$startDate' AND fec_up <= '$endDate';";
 		$result = $conex->prepare($sql);
 		$result->execute();
